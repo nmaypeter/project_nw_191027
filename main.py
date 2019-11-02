@@ -40,6 +40,7 @@ if __name__ == '__main__':
                         # Model('mdag2rd', dataset_name, product_name, cascade_model, seed_cost_option, diff_seed_option).model_dag2(r_flag=True, d_flag=True)
                         # Model('mngd', dataset_name, product_name, cascade_model, seed_cost_option, diff_seed_option).model_ng(r_flag=False, d_flag=True)
                         # Model('mngrd', dataset_name, product_name, cascade_model, seed_cost_option, diff_seed_option).model_ng(r_flag=True, d_flag=True)
+                        Model('mbcsd', dataset_name, product_name, cascade_model, seed_cost_option, diff_seed_option).model_bcs(d_flag=True)
 
                         for wd in wd_seq:
                             wallet_distribution_type = 'm50e25' * (wd == 1) + 'm99e96' * (wd == 2)
