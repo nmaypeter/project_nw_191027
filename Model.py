@@ -902,80 +902,82 @@ class Model:
                   ', seed_cost_option = ' + self.seed_cost_option + ', bud_iter = ' + str(now_b_iter) + ', budget = ' + str(total_budget))
 
             ss_start_time = time.time()
-            [Billboard_ss_acc_time, Billboard_now_budget, Billboard_now_profit, Billboard_seed_set, Billboard_seed_mioa_dict, Billboard_celf_heap] = Billboard_temp_sequence.pop()
 
-            Billboard_celf_heap_c = []
-            while Billboard_now_budget < total_budget and Billboard_celf_heap:
-                if round(Billboard_now_budget + seed_cost_dict[Billboard_celf_heap[0][1]][Billboard_celf_heap[0][2]], 4) >= total_budget and bud_iteration and not Billboard_temp_sequence:
-                    Billboard_celf_heap_c = copy.deepcopy(Billboard_celf_heap)
-                mep_item = heap.heappop_max(Billboard_celf_heap)
-                mep_mg, mep_k_prod, mep_i_node, mep_flag = mep_item
-                sc = seed_cost_dict[mep_k_prod][mep_i_node]
-                seed_set_length = sum(len(Billboard_seed_set[k]) for k in range(num_product))
+            if Billboard_temp_sequence:
+                [Billboard_ss_acc_time, Billboard_now_budget, Billboard_now_profit, Billboard_seed_set, Billboard_seed_mioa_dict, Billboard_celf_heap] = Billboard_temp_sequence.pop()
+                Billboard_celf_heap_c = []
+                while Billboard_now_budget < total_budget and Billboard_celf_heap:
+                    if round(Billboard_now_budget + seed_cost_dict[Billboard_celf_heap[0][1]][Billboard_celf_heap[0][2]], 4) >= total_budget and bud_iteration and not Billboard_temp_sequence:
+                        Billboard_celf_heap_c = copy.deepcopy(Billboard_celf_heap)
+                    mep_item = heap.heappop_max(Billboard_celf_heap)
+                    mep_mg, mep_k_prod, mep_i_node, mep_flag = mep_item
+                    sc = seed_cost_dict[mep_k_prod][mep_i_node]
+                    seed_set_length = sum(len(Billboard_seed_set[k]) for k in range(num_product))
 
-                if round(Billboard_now_budget + sc, 4) >= total_budget and not Billboard_temp_sequence:
-                    ss_time = round(time.time() - ss_start_time + Billboard_ss_acc_time, 4)
-                    Billboard_temp_sequence.append([ss_time, Billboard_now_budget, Billboard_now_profit, copy.deepcopy(Billboard_seed_set), copy.deepcopy(Billboard_seed_mioa_dict), Billboard_celf_heap_c])
+                    if round(Billboard_now_budget + sc, 4) >= total_budget and not Billboard_temp_sequence:
+                        ss_time = round(time.time() - ss_start_time + Billboard_ss_acc_time, 4)
+                        Billboard_temp_sequence.append([ss_time, Billboard_now_budget, Billboard_now_profit, copy.deepcopy(Billboard_seed_set), copy.deepcopy(Billboard_seed_mioa_dict), Billboard_celf_heap_c])
 
-                if round(Billboard_now_budget + sc, 4) > total_budget:
-                    continue
+                    if round(Billboard_now_budget + sc, 4) > total_budget:
+                        continue
 
-                if mep_flag == seed_set_length:
-                    Billboard_seed_mioa_dict = updateSeedMIOADict(Billboard_seed_mioa_dict, mep_k_prod, mep_i_node, Billboard_seed_set, mioa_dict[mep_k_prod][mep_i_node])
-                    Billboard_seed_set[mep_k_prod].add(mep_i_node)
-                    Billboard_now_budget = round(Billboard_now_budget + sc, 4)
-                    Billboard_now_profit = round(Billboard_now_profit + (mep_mg + sc * d_flag), 4)
+                    if mep_flag == seed_set_length:
+                        Billboard_seed_mioa_dict = updateSeedMIOADict(Billboard_seed_mioa_dict, mep_k_prod, mep_i_node, Billboard_seed_set, mioa_dict[mep_k_prod][mep_i_node])
+                        Billboard_seed_set[mep_k_prod].add(mep_i_node)
+                        Billboard_now_budget = round(Billboard_now_budget + sc, 4)
+                        Billboard_now_profit = round(Billboard_now_profit + (mep_mg + sc * d_flag), 4)
 
-                    if self.diff_seed_option:
-                        Billboard_celf_heap = [celf_item for celf_item in Billboard_celf_heap if celf_item[2] != mep_i_node]
-                        heap.heapify_max(Billboard_celf_heap)
-                else:
-                    Billboard_seed_exp_mioa_dict = updateSeedMIOADict(copy.deepcopy(Billboard_seed_mioa_dict), mep_k_prod, mep_i_node, Billboard_seed_set, mioa_dict[mep_k_prod][mep_i_node])
-                    expected_inf = calculateExpectedInf(Billboard_seed_exp_mioa_dict)
-                    ep_t = sum(expected_inf[k] * product_list[k][0] for k in range(num_product)) - sc * d_flag
-                    mg_t = round(ep_t - Billboard_now_profit, 4)
-                    flag_t = seed_set_length
+                        if self.diff_seed_option:
+                            Billboard_celf_heap = [celf_item for celf_item in Billboard_celf_heap if celf_item[2] != mep_i_node]
+                            heap.heapify_max(Billboard_celf_heap)
+                    else:
+                        Billboard_seed_exp_mioa_dict = updateSeedMIOADict(copy.deepcopy(Billboard_seed_mioa_dict), mep_k_prod, mep_i_node, Billboard_seed_set, mioa_dict[mep_k_prod][mep_i_node])
+                        expected_inf = calculateExpectedInf(Billboard_seed_exp_mioa_dict)
+                        ep_t = sum(expected_inf[k] * product_list[k][0] for k in range(num_product)) - sc * d_flag
+                        mg_t = round(ep_t - Billboard_now_profit, 4)
+                        flag_t = seed_set_length
 
-                    if mg_t > 0:
-                        celf_item_t = (mg_t, mep_k_prod, mep_i_node, flag_t)
-                        heap.heappush_max(Billboard_celf_heap, celf_item_t)
+                        if mg_t > 0:
+                            celf_item_t = (mg_t, mep_k_prod, mep_i_node, flag_t)
+                            heap.heappush_max(Billboard_celf_heap, celf_item_t)
 
-            [Handbill_ss_acc_time, Handbill_now_budget, Handbill_now_profit, Handbill_seed_set, Handbill_seed_mioa_dict, Handbill_celf_heap] = Handbill_temp_sequence.pop()
-            Handbill_celf_heap_c = []
-            while Handbill_now_budget < total_budget and Handbill_celf_heap:
-                if round(Handbill_now_budget + seed_cost_dict[Handbill_celf_heap[0][1]][Handbill_celf_heap[0][2]], 4) >= total_budget and bud_iteration and not Handbill_temp_sequence:
-                    Handbill_celf_heap_c = copy.deepcopy(Handbill_celf_heap)
-                mep_item = heap.heappop_max(Handbill_celf_heap)
-                mep_mg, mep_k_prod, mep_i_node, mep_flag = mep_item
-                sc = seed_cost_dict[mep_k_prod][mep_i_node]
-                seed_set_length = sum(len(Handbill_seed_set[k]) for k in range(num_product))
+            if Handbill_temp_sequence:
+                [Handbill_ss_acc_time, Handbill_now_budget, Handbill_now_profit, Handbill_seed_set, Handbill_seed_mioa_dict, Handbill_celf_heap] = Handbill_temp_sequence.pop()
+                Handbill_celf_heap_c = []
+                while Handbill_now_budget < total_budget and Handbill_celf_heap:
+                    if round(Handbill_now_budget + seed_cost_dict[Handbill_celf_heap[0][1]][Handbill_celf_heap[0][2]], 4) >= total_budget and bud_iteration and not Handbill_temp_sequence:
+                        Handbill_celf_heap_c = copy.deepcopy(Handbill_celf_heap)
+                    mep_item = heap.heappop_max(Handbill_celf_heap)
+                    mep_mg, mep_k_prod, mep_i_node, mep_flag = mep_item
+                    sc = seed_cost_dict[mep_k_prod][mep_i_node]
+                    seed_set_length = sum(len(Handbill_seed_set[k]) for k in range(num_product))
 
-                if round(Handbill_now_budget + sc, 4) >= total_budget and not Handbill_temp_sequence:
-                    ss_time = round(time.time() - ss_start_time + Handbill_ss_acc_time, 4)
-                    Handbill_temp_sequence.append([ss_time, Handbill_now_budget, Handbill_now_profit, copy.deepcopy(Handbill_seed_set), Handbill_celf_heap_c])
+                    if round(Handbill_now_budget + sc, 4) >= total_budget and not Handbill_temp_sequence:
+                        ss_time = round(time.time() - ss_start_time + Handbill_ss_acc_time, 4)
+                        Handbill_temp_sequence.append([ss_time, Handbill_now_budget, Handbill_now_profit, copy.deepcopy(Handbill_seed_set), copy.deepcopy(Handbill_seed_mioa_dict), Handbill_celf_heap_c])
 
-                if round(Handbill_now_budget + sc, 4) > total_budget:
-                    continue
+                    if round(Handbill_now_budget + sc, 4) > total_budget:
+                        continue
 
-                if mep_flag == seed_set_length:
-                    Handbill_seed_set[mep_k_prod].add(mep_i_node)
-                    Handbill_now_budget = round(Handbill_now_budget + sc, 4)
-                    Handbill_now_profit = round(Handbill_now_profit + (mep_mg * sc + sc * d_flag), 4)
+                    if mep_flag == seed_set_length:
+                        Handbill_seed_set[mep_k_prod].add(mep_i_node)
+                        Handbill_now_budget = round(Handbill_now_budget + sc, 4)
+                        Handbill_now_profit = round(Handbill_now_profit + (mep_mg * sc + sc * d_flag), 4)
 
-                    if self.diff_seed_option:
-                        Handbill_celf_heap = [celf_item for celf_item in Handbill_celf_heap if celf_item[2] != mep_i_node]
-                        heap.heapify_max(Handbill_celf_heap)
-                else:
-                    Handbill_seed_exp_mioa_dict = updateSeedMIOADict(copy.deepcopy(Handbill_seed_mioa_dict), mep_k_prod, mep_i_node, Handbill_seed_set, mioa_dict[mep_k_prod][mep_i_node])
-                    expected_inf = calculateExpectedInf(Handbill_seed_exp_mioa_dict)
-                    ep_t = sum(expected_inf[k] * product_list[k][0] for k in range(num_product)) - sc * d_flag
-                    mg_t = round(ep_t - Billboard_now_profit, 4)
-                    mg_t = safe_div(mg_t, sc)
-                    flag_t = seed_set_length
+                        if self.diff_seed_option:
+                            Handbill_celf_heap = [celf_item for celf_item in Handbill_celf_heap if celf_item[2] != mep_i_node]
+                            heap.heapify_max(Handbill_celf_heap)
+                    else:
+                        Handbill_seed_exp_mioa_dict = updateSeedMIOADict(copy.deepcopy(Handbill_seed_mioa_dict), mep_k_prod, mep_i_node, Handbill_seed_set, mioa_dict[mep_k_prod][mep_i_node])
+                        expected_inf = calculateExpectedInf(Handbill_seed_exp_mioa_dict)
+                        ep_t = sum(expected_inf[k] * product_list[k][0] for k in range(num_product)) - sc * d_flag
+                        mg_t = round(ep_t - Billboard_now_profit, 4)
+                        mg_t = safe_div(mg_t, sc)
+                        flag_t = seed_set_length
 
-                    if mg_t > 0:
-                        celf_item_t = (mg_t, mep_k_prod, mep_i_node, flag_t)
-                        heap.heappush_max(Handbill_celf_heap, celf_item_t)
+                        if mg_t > 0:
+                            celf_item_t = (mg_t, mep_k_prod, mep_i_node, flag_t)
+                            heap.heappush_max(Handbill_celf_heap, celf_item_t)
 
             ss_start_time = time.time()
             final_seed_set = copy.deepcopy(Billboard_seed_set)
@@ -999,7 +1001,7 @@ class Model:
                                 Handbill_counter_t += 1
                         seed_exp_mioa_dict = generateExpMIOA(mioa_dict, final_seed_set_t)
                         expected_inf = calculateExpectedInf(seed_exp_mioa_dict)
-                        final_ep_t = sum(expected_inf[k] * product_list[k][0])
+                        final_ep_t = sum(expected_inf[k] * product_list[k][0] for k in range(num_product))
                         final_mg_t = final_ep_t - final_ep
                         if final_mg_t >= 0:
                             final_seed_set = final_seed_set_t
@@ -1023,7 +1025,7 @@ class Model:
                                             final_bud_t += seed_cost_dict[k_prod][i_node]
                                     seed_exp_mioa_dict = generateExpMIOA(mioa_dict, final_seed_set_t)
                                     expected_inf = calculateExpectedInf(seed_exp_mioa_dict)
-                                    final_ep_t = sum(expected_inf[k] * product_list[k][0])
+                                    final_ep_t = sum(expected_inf[k] * product_list[k][0] for k in range(num_product))
                                     final_mg_t = final_ep_t - final_ep
                                     if final_mg_t >= 0:
                                         final_seed_set = final_seed_set_t
