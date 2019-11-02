@@ -110,7 +110,7 @@ class Model:
                     seed_mioa_dict = updateSeedMIOADict(seed_mioa_dict, mep_k_prod, mep_i_node, seed_set, mioa_dict[mep_k_prod][mep_i_node])
                     seed_set[mep_k_prod].add(mep_i_node)
                     now_budget = round(now_budget + sc, 4)
-                    now_profit = round(now_profit + mep_mg * (sc if r_flag else 1.0), 4)
+                    now_profit = round(now_profit + (mep_mg + sc * d_flag) * (sc if r_flag else 1.0), 4)
                     seed_data.append(str(round(time.time() - ss_start_time + ss_acc_time, 4)) + '\t' + str(mep_k_prod) + '\t' + str(mep_i_node) + '\t' +
                                      str(now_budget) + '\t' + str(now_profit) + '\t' + str([len(seed_set[k]) for k in range(num_product)]) + '\n')
 
@@ -224,7 +224,7 @@ class Model:
                 if mep_flag == seed_set_length:
                     seed_set[mep_k_prod].add(mep_i_node)
                     now_budget = round(now_budget + sc, 4)
-                    now_profit = round(now_profit + mep_mg * (sc if r_flag else 1.0), 4)
+                    now_profit = round(now_profit + (mep_mg + sc * d_flag) * (sc if r_flag else 1.0), 4)
                     seed_dag_dict = mep_seed_dag_dict[1]
                     mep_seed_dag_dict = (0.0, [{} for _ in range(num_product)])
                     seed_data.append(str(round(time.time() - ss_start_time + ss_acc_time, 4)) + '\t' + str(mep_k_prod) + '\t' + str(mep_i_node) + '\t' +
@@ -347,7 +347,7 @@ class Model:
                 if mep_flag == seed_set_length:
                     seed_set[mep_k_prod].add(mep_i_node)
                     now_budget = round(now_budget + sc, 4)
-                    now_profit = round(now_profit + mep_mg * (sc if r_flag else 1.0), 4)
+                    now_profit = round(now_profit + (mep_mg + sc * d_flag) * (sc if r_flag else 1.0), 4)
                     seed_dag_dict = mep_seed_dag_dict[1]
                     mep_seed_dag_dict = (0.0, [{} for _ in range(num_product)])
                     seed_data.append(str(round(time.time() - ss_start_time + ss_acc_time, 4)) + '\t' + str(mep_k_prod) + '\t' + str(mep_i_node) + '\t' +
@@ -427,9 +427,7 @@ class Model:
         seed_set = [set() for _ in range(num_product)]
 
         wd_seq = [self.wallet_distribution_type] if self.wallet_distribution_type else self.wd_seq
-        celf_heap = ssng_model.generateCelfHeap()
-        if d_flag:
-            celf_heap = [(round(celf_item[0] - seed_cost_dict[celf_item[1]][celf_item[2]], 4), celf_item[1], celf_item[2], celf_item[3]) for celf_item in celf_heap]
+        celf_heap = ssng_model.generateCelfHeap(d_flag)
         generateHeapOrder(celf_heap, self.model_name, self.dataset_name, self.product_name, self.cascade_model, self.seed_cost_option, self.diff_seed_option, self.wallet_distribution_type)
 
         ss_acc_time = round(time.time() - ss_start_time, 4)
@@ -695,7 +693,7 @@ class Model:
                 for wallet_distribution_type in self.wd_seq:
                     eva_model.evaluate(bi, wallet_distribution_type, seed_set_sequence[now_bi_index], ss_time_sequence[now_bi_index])
 
-    def model_bcs(self):
+    def model_bcs(self, d_flag=False):
         ini = Initialization(self.dataset_name, self.product_name, self.wallet_distribution_type)
         seed_cost_dict = ini.constructSeedCostDict(self.seed_cost_option)
         graph_dict = ini.constructGraphDict(self.cascade_model)
@@ -711,7 +709,7 @@ class Model:
         ss_start_time = time.time()
         Billboard_now_budget, Billboard_now_profit, Billboard_seed_set = 0.0, 0.0, [set() for _ in range(num_product)]
         Handbill_now_budget, Handbill_now_profit, Handbill_seed_set = 0.0, 0.0, [set() for _ in range(num_product)]
-        Billboard_celf_heap, Handbill_celf_heap = ssbcs.generateCelfHeap(self.dataset_name)
+        Billboard_celf_heap, Handbill_celf_heap = ssbcs.generateCelfHeap(self.dataset_name, d_flag)
 
         bud_iteration = self.budget_iteration.copy()
         Billboard_ss_acc_time = round(time.time() - ss_start_time, 4)
@@ -747,14 +745,15 @@ class Model:
                 if mep_flag == seed_set_length:
                     Billboard_seed_set[mep_k_prod].add(mep_i_node)
                     Billboard_now_budget = round(Billboard_now_budget + sc, 4)
-                    Billboard_now_profit = round(Billboard_now_profit + mep_mg, 4)
+                    Billboard_now_profit = round(Billboard_now_profit + (mep_mg + sc * d_flag), 4)
 
-                    celf_heap = [celf_item for celf_item in Billboard_celf_heap if celf_item[2] != mep_i_node]
-                    heap.heapify_max(celf_heap)
+                    if self.diff_seed_option:
+                        Billboard_celf_heap = [celf_item for celf_item in Billboard_celf_heap if celf_item[2] != mep_i_node]
+                        heap.heapify_max(Billboard_celf_heap)
                 else:
                     seed_set_t = copy.deepcopy(Billboard_seed_set)
                     seed_set_t[mep_k_prod].add(mep_i_node)
-                    ep_t = diff.getSeedSetProfitBCS(seed_set_t)
+                    ep_t = diff.getSeedSetProfitBCS(seed_set_t) - sc * d_flag
                     mg_t = round(ep_t - Billboard_now_profit, 4)
                     flag_t = seed_set_length
 
@@ -783,14 +782,15 @@ class Model:
                     Handbill_seed_set[mep_k_prod].add(mep_i_node)
                     Handbill_now_budget = round(Handbill_now_budget + sc, 4)
                     mep_mg *= sc
-                    Handbill_now_profit = round(Handbill_now_profit + mep_mg, 4)
+                    Handbill_now_profit = round(Handbill_now_profit + (mep_mg + sc * d_flag), 4)
 
-                    celf_heap = [celf_item for celf_item in Handbill_celf_heap if celf_item[2] != mep_i_node]
-                    heap.heapify_max(celf_heap)
+                    if self.diff_seed_option:
+                        Handbill_celf_heap = [celf_item for celf_item in Handbill_celf_heap if celf_item[2] != mep_i_node]
+                        heap.heapify_max(Handbill_celf_heap)
                 else:
                     seed_set_t = copy.deepcopy(Handbill_seed_set)
                     seed_set_t[mep_k_prod].add(mep_i_node)
-                    ep_t = diff.getSeedSetProfitBCS(seed_set_t)
+                    ep_t = diff.getSeedSetProfitBCS(seed_set_t) - sc * d_flag
                     mg_t = round(ep_t - Handbill_now_profit, 4)
                     mg_t = safe_div(mg_t, sc)
                     flag_t = seed_set_length
