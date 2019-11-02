@@ -18,6 +18,15 @@ def updateSeedMIOADict(s_set_mioa_dict, k_prod, i_node, s_set, seed_mioa_dict):
     return s_set_mioa_dict
 
 
+def generateExpMIOA(mioa_dict, s_set):
+    s_set_mioa_dict = [{} for _ in range(len(s_set))]
+    for k in range(len(s_set)):
+        for i in s_set[k]:
+            s_set_mioa_dict = updateSeedMIOADict(s_set_mioa_dict, k, i, s_set, mioa_dict[k][i])
+
+    return s_set_mioa_dict
+
+
 def updateSeedDAGDict(s_set_dag_dict, k_prod, i_node):
     del_list = []
 
@@ -228,6 +237,33 @@ class SeedSelectionMIOA:
         return sdag_dict
 
 
+def SpiltHeuristicsSet(data_name):
+    data_degree_path = 'data/' + data_name + '/degree.txt'
+    degree_dict = {}
+    with open(data_degree_path) as f:
+        for line in f:
+            (node, deg) = line.split()
+            if int(deg) in degree_dict:
+                degree_dict[int(deg)].add(node)
+            else:
+                degree_dict[int(deg)] = {node}
+    f.close()
+
+    degree_count_dict = {deg: len(degree_dict[deg]) for deg in degree_dict}
+    num_node20 = sum([degree_count_dict[d] for d in degree_count_dict]) * 0.2
+    degree_count_dict = {deg: abs(sum([degree_count_dict[d] for d in degree_count_dict if d >= deg]) - num_node20) for
+                         deg in degree_count_dict}
+    degree_threshold20 = min(degree_count_dict, key=degree_count_dict.get)
+    Billboard_set, Handbill_set = set(), set()
+    for deg in degree_dict:
+        if deg >= degree_threshold20:
+            Billboard_set = Billboard_set.union(degree_dict[deg])
+        else:
+            Handbill_set = Handbill_set.union(degree_dict[deg])
+
+    return Billboard_set, Handbill_set
+
+
 class SeedSelectionBalancedCombinationStrategy:
     def __init__(self, graph_dict, seed_cost_dict, product_list, product_weight_list):
         ### graph_dict: (dict) the graph
@@ -243,29 +279,8 @@ class SeedSelectionBalancedCombinationStrategy:
 
     def generateCelfHeap(self, data_name, d_flag):
         # -- calculate expected profit for all combinations of nodes and products --
-        data_degree_path = 'data/' + data_name + '/degree.txt'
-        degree_dict = {}
-        with open(data_degree_path) as f:
-            for line in f:
-                (node, deg) = line.split()
-                if int(deg) in degree_dict:
-                    degree_dict[int(deg)].add(node)
-                else:
-                    degree_dict[int(deg)] = {node}
-        f.close()
-
-        degree_count_dict = {deg: len(degree_dict[deg]) for deg in degree_dict}
-        num_node20 = sum([degree_count_dict[d] for d in degree_count_dict]) * 0.2
-        degree_count_dict = {deg: abs(sum([degree_count_dict[d] for d in degree_count_dict if d >= deg]) - num_node20) for deg in degree_count_dict}
-        degree_threshold20 = min(degree_count_dict, key=degree_count_dict.get)
-        Billboard_set, Handbill_set = set(), set()
-        for deg in degree_dict:
-            if deg >= degree_threshold20:
-                Billboard_set = Billboard_set.union(degree_dict[deg])
-            else:
-                Handbill_set = Handbill_set.union(degree_dict[deg])
-
         ### celf_item: (list) (mg, k_prod, i_node, flag)
+        Billboard_set, Handbill_set = SpiltHeuristicsSet(data_name)
         Billboard_celf_heap, Handbill_celf_heap = [], []
 
         diff = Diffusion(self.graph_dict, self.product_list, self.product_weight_list)
