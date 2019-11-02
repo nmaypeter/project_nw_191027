@@ -241,7 +241,7 @@ class SeedSelectionBalancedCombinationStrategy:
         self.num_product = len(product_list)
         self.product_weight_list = product_weight_list
 
-    def generateCelfHeap(self, data_name):
+    def generateCelfHeap(self, data_name, d_flag):
         # -- calculate expected profit for all combinations of nodes and products --
         data_degree_path = 'data/' + data_name + '/degree.txt'
         degree_dict = {}
@@ -276,7 +276,7 @@ class SeedSelectionBalancedCombinationStrategy:
 
             if ep > 0:
                 for k in range(self.num_product):
-                    mg = safe_div(ep * self.product_list[k][0] * self.product_weight_list[k], self.product_list[0][0] * self.product_weight_list[0])
+                    mg = safe_div((ep * self.product_list[k][0] - self.seed_cost_dict[k][i] * d_flag) * self.product_weight_list[k], self.product_list[0][0] * self.product_weight_list[0])
                     celf_item = (mg, k, i, 0)
                     heap.heappush_max(Billboard_celf_heap, celf_item)
 
@@ -287,7 +287,7 @@ class SeedSelectionBalancedCombinationStrategy:
 
             if ep > 0:
                 for k in range(self.num_product):
-                    mg = safe_div(ep * self.product_list[k][0] * self.product_weight_list[k], self.product_list[0][0] * self.product_weight_list[0])
+                    mg = safe_div((ep * self.product_list[k][0] - self.seed_cost_dict[k][i] * d_flag), self.product_list[0][0] * self.product_weight_list[0])
                     mg = safe_div(mg, self.seed_cost_dict[k][i])
                     celf_item = (mg, k, i, 0)
                     heap.heappush_max(Handbill_celf_heap, celf_item)
@@ -311,7 +311,7 @@ class SeedSelectionNG:
         self.r_flag = r_flag
         self.monte = 100
 
-    def generateCelfHeap(self):
+    def generateCelfHeap(self, d_flag):
         # -- calculate expected profit for all combinations of nodes and products --
         ### celf_item: (list) (mg, k_prod, i_node, flag)
         celf_heap = []
@@ -324,7 +324,7 @@ class SeedSelectionNG:
 
             if ep > 0:
                 for k in range(self.num_product):
-                    mg = safe_div(ep * self.product_list[k][0] * self.product_weight_list[k], self.product_list[0][0] * self.product_weight_list[0])
+                    mg = safe_div((ep * self.product_list[k][0] - self.seed_cost_dict[k][i] * d_flag), self.product_list[0][0] * self.product_weight_list[0])
                     if self.r_flag:
                         mg = safe_div(mg, self.seed_cost_dict[k][i])
                     celf_item = (mg, k, i, 0)
