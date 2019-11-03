@@ -396,8 +396,9 @@ class Model:
 
         while -1 in seed_data_sequence:
             no_data_index = seed_data_sequence.index(-1)
-            seed_data_sequence[no_data_index] = seed_data_sequence[no_data_index - 1]
+            seed_set_sequence[no_data_index] = seed_set_sequence[no_data_index - 1]
             ss_time_sequence[no_data_index] = ss_time_sequence[no_data_index - 1]
+            seed_data_sequence[no_data_index] = seed_data_sequence[no_data_index - 1]
 
         eva_model = EvaluationM(self.model_name, self.dataset_name, self.product_name, self.seed_cost_option, self.diff_seed_option, self.cascade_model)
         for bi in self.budget_iteration:
