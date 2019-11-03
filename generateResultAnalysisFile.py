@@ -1,7 +1,7 @@
 import xlwings as xw
 
 dataset_seq = [1, 2, 3, 4]
-sc_option_seq = [1, 2]
+sc_option_seq = [1, 2, 3]
 ds_option_seq = [1, 2]
 cm_seq = [1, 2]
 prod_seq = [1, 2]
@@ -21,8 +21,10 @@ model_seq = ['mmioaepw', 'mmioadepw', 'mmioarepw', 'mmioardepw',
              'mhd', 'mr']
 
 for data_setting in dataset_seq:
-    dataset_name = 'email' * (data_setting == 1) + 'dnc_email' * (data_setting == 2) + \
-                   'email_Eu_core' * (data_setting == 3) + 'NetHEPT' * (data_setting == 4)
+    # dataset_name = 'email' * (data_setting == 1) + 'dnc_email' * (data_setting == 2) + \
+    #                'email_Eu_core' * (data_setting == 3) + 'NetHEPT' * (data_setting == 4)
+    new_dataset_name = 'email' * (data_setting == 1) + 'dnc' * (data_setting == 2) + \
+                    'Eu' * (data_setting == 3) + 'Net' * (data_setting == 4)
     for sc_option in sc_option_seq:
         seed_cost_option = 'dp' * (sc_option == 1) + 'd' * (sc_option == 2) + 'p' * (sc_option == 3)
         for cm in cm_seq:
@@ -32,20 +34,23 @@ for data_setting in dataset_seq:
                 for ds_option in ds_option_seq:
                     diff_seed_option = False if ds_option == 1 else True
                     for prod_setting in prod_seq:
-                        product_name = 'item_lphc' * (prod_setting == 1) + 'item_hplc' * (prod_setting == 2)
+                        # product_name = 'item_lphc' * (prod_setting == 1) + 'item_hplc' * (prod_setting == 2)
+                        new_product_name = 'lphc' * (prod_setting == 1) + 'hplc' * (prod_setting == 2)
                         for wallet_distribution in wallet_distribution_seq:
                             wallet_distribution_type = 'm50e25' * (wallet_distribution == 1) + 'm99e96' * (wallet_distribution == 2)
 
                             profit = []
-                            r = dataset_name + '\t' + seed_cost_option + '\t' + cascade_model + '\t' + \
-                                wallet_distribution_type + '\t' + product_name + '\t' + str(diff_seed_option) + '\t' + str(bi)
+                            # r = dataset_name + '\t' + seed_cost_option + '\t' + cascade_model + '\t' + \
+                            #     wallet_distribution_type + '\t' + product_name + '\t' + str(diff_seed_option) + '\t' + str(bi)
+                            r = new_dataset_name + '\t' + seed_cost_option + '\t' + cascade_model + '\t' + \
+                                wallet_distribution_type + '\t' + new_product_name + '\t' + str(diff_seed_option) + '\t' + str(bi)
                             print(r)
                             for model_name in model_seq:
                                 try:
                                     result_name = 'result/' + \
-                                                  model_name + '_' + wallet_distribution_type + '/' + \
-                                                  dataset_name + '_' + cascade_model + '_' + product_name + '_' + seed_cost_option + \
-                                                  '_ds' * diff_seed_option + '_bi' + str(bi) + '.txt'
+                                                  new_dataset_name + '_' + cascade_model + '_' + seed_cost_option + '/' + \
+                                                  model_name + '_ds' * diff_seed_option + '/' + \
+                                                  wallet_distribution_type + '_' + new_product_name + '_bi' + str(bi) + '.txt'
 
                                     with open(result_name) as f:
                                         p = 0
@@ -66,7 +71,7 @@ for data_setting in dataset_seq:
                             profit_list.append(profit)
                     profit_list.append(['' for _ in range(len(model_seq))])
 
-            result_path = 'result/result_analysis_' + dataset_name + '.xlsx'
+            result_path = 'result/result_' + new_dataset_name + '.xlsx'
             wb = xw.Book(result_path)
             sheet_name = 'profit_' + seed_cost_option + ' (' + cascade_model + ')'
             sheet = wb.sheets[sheet_name]
