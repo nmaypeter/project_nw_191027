@@ -57,8 +57,9 @@ class Evaluation:
 class EvaluationM:
     def __init__(self, model_name, dataset_name, product_name, seed_cost_option, diff_seed_option, cascade_model):
         self.model_name = model_name
-        self.dataset_name = dataset_name
-        self.product_name = product_name
+        self.dataset_name = 'email' * (dataset_name == 'email') + 'dnc' * (dataset_name == 'dnc_email') + \
+                            'Eu' * (dataset_name == 'email_Eu_core') + 'Net' * (dataset_name == 'NetHEPT')
+        self.product_name = 'lphc' * (product_name == 'item_lphc') + 'hplc' * (product_name == 'item_hplc')
         self.seed_cost_option = seed_cost_option
         self.diff_seed_option = diff_seed_option
         self.cascade_model = cascade_model
@@ -97,11 +98,15 @@ class EvaluationM:
         print(result)
         print('------------------------------------------')
 
-        path = 'result/' + self.model_name + '_' + wallet_distribution_type
+        path0 = 'result/' + self.dataset_name + '_' + self.cascade_model + '_' + self.seed_cost_option
+        if not os.path.isdir(path0):
+            os.mkdir(path0)
+        path = path0 + '/' + self.model_name + '_ds' * self.diff_seed_option
         if not os.path.isdir(path):
             os.mkdir(path)
-        fw = open(path + '/' + self.dataset_name + '_' + self.cascade_model + '_' + self.product_name + '_' + self.seed_cost_option +
-                  '_ds' * self.diff_seed_option + '_bi' + str(bi) + '.txt', 'w')
+        result_name = path + '/' + wallet_distribution_type + '_' + self.product_name + '_bi' + str(bi) + '.txt'
+        
+        fw = open(result_name, 'w')
         fw.write(self.model_name + ', ' + wallet_distribution_type + ', ' + self.dataset_name + '_' + self.cascade_model + ', ' + self.product_name +
                  ', seed_cost_option = ' + self.seed_cost_option + '\n\n' +
                  'total_budget = ' + str(total_budget) + '\n' +
