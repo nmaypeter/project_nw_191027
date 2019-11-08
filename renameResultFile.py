@@ -56,7 +56,88 @@ for data_setting in dataset_seq:
                                     if not os.path.isdir(new_path):
                                         os.mkdir(new_path)
                                     new_result_name = new_path + '/' + wallet_distribution_type + '_' + new_product_name + '_bi' + str(bi) + '.txt'
-                                    os.rename(result_name, new_result_name)
+                                    if not os.path.isfile(new_result_name):
+                                        os.rename(result_name, new_result_name)
+
+                                except FileNotFoundError:
+                                    continue
+
+for data_setting in dataset_seq:
+    dataset_name = 'email' * (data_setting == 1) + 'dnc_email' * (data_setting == 2) + \
+                   'email_Eu_core' * (data_setting == 3) + 'NetHEPT' * (data_setting == 4)
+    new_dataset_name = 'email' * (data_setting == 1) + 'dnc' * (data_setting == 2) + \
+                       'Eu' * (data_setting == 3) + 'Net' * (data_setting == 4)
+    for sc_option in sc_option_seq:
+        seed_cost_option = 'dp' * (sc_option == 1) + 'd' * (sc_option == 2) + 'p' * (sc_option == 3)
+        for cm in cm_seq:
+            cascade_model = 'ic' * (cm == 1) + 'wc' * (cm == 2)
+            for bi in range(10, 5, -1):
+                for ds_option in ds_option_seq:
+                    diff_seed_option = False if ds_option == 1 else True
+                    for prod_setting in prod_seq:
+                        product_name = 'item_lphc' * (prod_setting == 1) + 'item_hplc' * (prod_setting == 2)
+                        new_product_name = 'lphc' * (prod_setting == 1) + 'hplc' * (prod_setting == 2)
+                        for wallet_distribution in wallet_distribution_seq:
+                            wallet_distribution_type = 'm50e25' * (wallet_distribution == 1) + 'm99e96' * (wallet_distribution == 2)
+
+                            r = new_dataset_name + '\t' + seed_cost_option + '\t' + cascade_model + '\t' + \
+                                wallet_distribution_type + '\t' + new_product_name + '\t' + str(diff_seed_option) + '\t' + str(bi)
+                            print(r)
+                            for model_name in model_seq:
+                                try:
+                                    result_name = 'seed_data/' + \
+                                                  model_name + '_' + wallet_distribution_type + '/' + \
+                                                  dataset_name + '_' + cascade_model + '_' + product_name + '_' + seed_cost_option + \
+                                                  '_ds' * diff_seed_option + '_bi' + str(bi) + '.txt'
+                                    new_path0 = 'seed_data/' + new_dataset_name + '_' + cascade_model + '_' + seed_cost_option
+                                    if not os.path.isdir(new_path0):
+                                        os.mkdir(new_path0)
+                                    new_path = new_path0 + '/' + model_name + '_ds' * diff_seed_option
+                                    if not os.path.isdir(new_path):
+                                        os.mkdir(new_path)
+                                    new_result_name = new_path + '/' + wallet_distribution_type + '_' + new_product_name + '_bi' + str(bi) + '.txt'
+                                    if not os.path.isfile(new_result_name):
+                                        os.rename(result_name, new_result_name)
+
+                                except FileNotFoundError:
+                                    continue
+
+for data_setting in dataset_seq:
+    dataset_name = 'email' * (data_setting == 1) + 'dnc_email' * (data_setting == 2) + \
+                   'email_Eu_core' * (data_setting == 3) + 'NetHEPT' * (data_setting == 4)
+    new_dataset_name = 'email' * (data_setting == 1) + 'dnc' * (data_setting == 2) + \
+                       'Eu' * (data_setting == 3) + 'Net' * (data_setting == 4)
+    for sc_option in sc_option_seq:
+        seed_cost_option = 'dp' * (sc_option == 1) + 'd' * (sc_option == 2) + 'p' * (sc_option == 3)
+        for cm in cm_seq:
+            cascade_model = 'ic' * (cm == 1) + 'wc' * (cm == 2)
+            for bi in range(10, 5, -1):
+                for ds_option in ds_option_seq:
+                    diff_seed_option = False if ds_option == 1 else True
+                    for prod_setting in prod_seq:
+                        product_name = 'item_lphc' * (prod_setting == 1) + 'item_hplc' * (prod_setting == 2)
+                        new_product_name = 'lphc' * (prod_setting == 1) + 'hplc' * (prod_setting == 2)
+                        for wallet_distribution in wallet_distribution_seq:
+                            wallet_distribution_type = 'm50e25' * (wallet_distribution == 1) + 'm99e96' * (wallet_distribution == 2)
+
+                            r = new_dataset_name + '\t' + seed_cost_option + '\t' + cascade_model + '\t' + \
+                                wallet_distribution_type + '\t' + new_product_name + '\t' + str(diff_seed_option) + '\t' + str(bi)
+                            print(r)
+                            for model_name in model_seq:
+                                try:
+                                    result_name = 'heap_order/' + \
+                                                  model_name + '_' + wallet_distribution_type + '/' + \
+                                                  dataset_name + '_' + cascade_model + '_' + product_name + '_' + seed_cost_option + \
+                                                  '_ds' * diff_seed_option + '.txt'
+                                    new_path0 = 'heap_order/' + new_dataset_name + '_' + cascade_model + '_' + seed_cost_option
+                                    if not os.path.isdir(new_path0):
+                                        os.mkdir(new_path0)
+                                    new_path = new_path0 + '/' + model_name + '_ds' * diff_seed_option
+                                    if not os.path.isdir(new_path):
+                                        os.mkdir(new_path)
+                                    new_result_name = new_path + '/' + wallet_distribution_type + '_' + new_product_name + '.txt'
+                                    if not os.path.isfile(new_result_name):
+                                        os.rename(result_name, new_result_name)
 
                                 except FileNotFoundError:
                                     continue
