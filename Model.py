@@ -146,11 +146,11 @@ class Model:
             seed_data_sequence[now_bi_index] = seed_data
 
             for wd in wd_seq:
-                seed_data_path = 'seed_data/' + self.model_name + '_' + wd
+                seed_data_path = 'seed_data/' + self.new_dataset_name + '_' + self.cascade_model + '_' + self.seed_cost_option
                 if not os.path.isdir(seed_data_path):
                     os.mkdir(seed_data_path)
-                seed_data_file = open(seed_data_path + '/' + self.dataset_name + '_' + self.cascade_model + '_' + self.product_name +
-                                      '_' + self.seed_cost_option + '_bi' + str(self.budget_iteration[now_bi_index]) + '.txt', 'w')
+                seed_data_file = open(seed_data_path + '/' + wd + '_' + self.new_product_name +
+                                      '_bi' + str(self.budget_iteration[now_bi_index]) + '.txt', 'w')
                 for sd in seed_data:
                     seed_data_file.write(sd)
                 seed_data_file.close()
@@ -270,11 +270,11 @@ class Model:
             seed_data_sequence[now_bi_index] = seed_data
 
             for wd in wd_seq:
-                seed_data_path = 'seed_data/' + self.model_name + '_' + wd
+                seed_data_path = 'seed_data/' + self.new_dataset_name + '_' + self.cascade_model + '_' + self.seed_cost_option
                 if not os.path.isdir(seed_data_path):
                     os.mkdir(seed_data_path)
-                seed_data_file = open(seed_data_path + '/' + self.dataset_name + '_' + self.cascade_model + '_' + self.product_name +
-                                      '_' + self.seed_cost_option + '_bi' + str(self.budget_iteration[now_bi_index]) + '.txt', 'w')
+                seed_data_file = open(seed_data_path + '/' + wd + '_' + self.new_product_name +
+                                      '_bi' + str(self.budget_iteration[now_bi_index]) + '.txt', 'w')
                 for sd in seed_data:
                     seed_data_file.write(sd)
                 seed_data_file.close()
@@ -394,11 +394,11 @@ class Model:
             seed_data_sequence[now_bi_index] = seed_data
 
             for wd in wd_seq:
-                seed_data_path = 'seed_data/' + self.model_name + '_' + wd
+                seed_data_path = 'seed_data/' + self.new_dataset_name + '_' + self.cascade_model + '_' + self.seed_cost_option
                 if not os.path.isdir(seed_data_path):
                     os.mkdir(seed_data_path)
-                seed_data_file = open(seed_data_path + '/' + self.dataset_name + '_' + self.cascade_model + '_' + self.product_name +
-                                      '_' + self.seed_cost_option + '_bi' + str(self.budget_iteration[now_bi_index]) + '.txt', 'w')
+                seed_data_file = open(seed_data_path + '/' + wd + '_' + self.new_product_name +
+                                      '_bi' + str(self.budget_iteration[now_bi_index]) + '.txt', 'w')
                 for sd in seed_data:
                     seed_data_file.write(sd)
                 seed_data_file.close()
@@ -502,11 +502,11 @@ class Model:
             seed_data_sequence[now_bi_index] = seed_data
 
             for wd in wd_seq:
-                seed_data_path = 'seed_data/' + self.model_name + '_' + wd
+                seed_data_path = 'seed_data/' + self.new_dataset_name + '_' + self.cascade_model + '_' + self.seed_cost_option
                 if not os.path.isdir(seed_data_path):
                     os.mkdir(seed_data_path)
-                seed_data_file = open(seed_data_path + '/' + self.dataset_name + '_' + self.cascade_model + '_' + self.product_name +
-                                      '_' + self.seed_cost_option + '_bi' + str(self.budget_iteration[now_bi_index]) + '.txt', 'w')
+                seed_data_file = open(seed_data_path + '/' + wd + '_' + self.new_product_name +
+                                      '_bi' + str(self.budget_iteration[now_bi_index]) + '.txt', 'w')
                 for sd in seed_data:
                     seed_data_file.write(sd)
                 seed_data_file.close()
@@ -594,11 +594,11 @@ class Model:
             seed_data_sequence[now_bi_index] = seed_data
 
             for wd in wd_seq:
-                seed_data_path = 'seed_data/' + self.model_name + '_' + wd
+                seed_data_path = 'seed_data/' + self.new_dataset_name + '_' + self.cascade_model + '_' + self.seed_cost_option
                 if not os.path.isdir(seed_data_path):
                     os.mkdir(seed_data_path)
-                seed_data_file = open(seed_data_path + '/' + self.dataset_name + '_' + self.cascade_model + '_' + self.product_name +
-                                      '_' + self.seed_cost_option + '_bi' + str(self.budget_iteration[now_bi_index]) + '.txt', 'w')
+                seed_data_file = open(seed_data_path + '/' + wd + '_' + self.new_product_name +
+                                      '_bi' + str(self.budget_iteration[now_bi_index]) + '.txt', 'w')
                 for sd in seed_data:
                     seed_data_file.write(sd)
                 seed_data_file.close()
@@ -684,11 +684,11 @@ class Model:
             seed_data_sequence[now_bi_index] = seed_data
 
             for wd in wd_seq:
-                seed_data_path = 'seed_data/' + self.model_name + '_' + wd
+                seed_data_path = 'seed_data/' + self.new_dataset_name + '_' + self.cascade_model + '_' + self.seed_cost_option
                 if not os.path.isdir(seed_data_path):
                     os.mkdir(seed_data_path)
-                seed_data_file = open(seed_data_path + '/' + self.dataset_name + '_' + self.cascade_model + '_' + self.product_name +
-                                      '_' + self.seed_cost_option + '_bi' + str(self.budget_iteration[now_bi_index]) + '.txt', 'w')
+                seed_data_file = open(seed_data_path + '/' + wd + '_' + self.new_product_name +
+                                      '_bi' + str(self.budget_iteration[now_bi_index]) + '.txt', 'w')
                 for sd in seed_data:
                     seed_data_file.write(sd)
                 seed_data_file.close()
@@ -747,86 +747,112 @@ class Model:
                   ', seed_cost_option = ' + self.seed_cost_option + ', bud_iter = ' + str(now_b_iter) + ', budget = ' + str(total_budget))
 
             ss_start_time = time.time()
-            [Billboard_ss_acc_time, Billboard_now_budget, Billboard_now_profit, Billboard_seed_set, Billboard_celf_heap] = Billboard_temp_sequence.pop()
-            Billboard_seed_data = Billboard_temp_seed_data.pop()
-            Billboard_celf_heap_c = []
-            while Billboard_now_budget < total_budget and Billboard_celf_heap:
-                if round(Billboard_now_budget + seed_cost_dict[Billboard_celf_heap[0][1]][Billboard_celf_heap[0][2]], 4) >= total_budget and bud_iteration and not Billboard_temp_sequence:
-                    Billboard_celf_heap_c = copy.deepcopy(Billboard_celf_heap)
-                mep_item = heap.heappop_max(Billboard_celf_heap)
-                mep_mg, mep_k_prod, mep_i_node, mep_flag = mep_item
-                sc = seed_cost_dict[mep_k_prod][mep_i_node]
-                seed_set_length = sum(len(Billboard_seed_set[k]) for k in range(num_product))
+            if Billboard_temp_sequence:
+                [Billboard_ss_acc_time, Billboard_now_budget, Billboard_now_profit, Billboard_seed_set, Billboard_celf_heap] = Billboard_temp_sequence.pop()
+                Billboard_seed_data = Billboard_temp_seed_data.pop()
+                Billboard_celf_heap_c = []
+                while Billboard_now_budget < total_budget and Billboard_celf_heap:
+                    if round(Billboard_now_budget + seed_cost_dict[Billboard_celf_heap[0][1]][Billboard_celf_heap[0][2]], 4) >= total_budget and bud_iteration and not Billboard_temp_sequence:
+                        Billboard_celf_heap_c = copy.deepcopy(Billboard_celf_heap)
+                    mep_item = heap.heappop_max(Billboard_celf_heap)
+                    mep_mg, mep_k_prod, mep_i_node, mep_flag = mep_item
+                    sc = seed_cost_dict[mep_k_prod][mep_i_node]
+                    seed_set_length = sum(len(Billboard_seed_set[k]) for k in range(num_product))
 
-                if round(Billboard_now_budget + sc, 4) >= total_budget and not Billboard_temp_sequence:
-                    ss_time = round(time.time() - ss_start_time + Billboard_ss_acc_time, 4)
-                    Billboard_temp_sequence.append([ss_time, Billboard_now_budget, Billboard_now_profit, copy.deepcopy(Billboard_seed_set), Billboard_celf_heap_c])
-                    Billboard_temp_seed_data.append(Billboard_seed_data.copy())
+                    if round(Billboard_now_budget + sc, 4) >= total_budget and not Billboard_temp_sequence:
+                        ss_time = round(time.time() - ss_start_time + Billboard_ss_acc_time, 4)
+                        Billboard_temp_sequence.append([ss_time, Billboard_now_budget, Billboard_now_profit, copy.deepcopy(Billboard_seed_set), Billboard_celf_heap_c])
+                        Billboard_temp_seed_data.append(Billboard_seed_data.copy())
 
-                if round(Billboard_now_budget + sc, 4) > total_budget:
-                    continue
+                    if round(Billboard_now_budget + sc, 4) > total_budget:
+                        continue
 
-                if mep_flag == seed_set_length:
-                    Billboard_seed_set[mep_k_prod].add(mep_i_node)
-                    Billboard_now_budget = round(Billboard_now_budget + sc, 4)
-                    Billboard_now_profit = round(Billboard_now_profit + (mep_mg + sc * d_flag), 4)
-                    Billboard_seed_data.append(str(round(time.time() - ss_start_time + Billboard_ss_acc_time, 4)) + '\t' + str(mep_k_prod) + '\t' + str(mep_i_node) + '\t' +
-                                               str(Billboard_now_budget) + '\t' + str(Billboard_now_profit) + '\t' + str([len(Billboard_seed_set[k]) for k in range(num_product)]) + '\n')
+                    if mep_flag == seed_set_length:
+                        Billboard_seed_set[mep_k_prod].add(mep_i_node)
+                        Billboard_now_budget = round(Billboard_now_budget + sc, 4)
+                        Billboard_now_profit = round(Billboard_now_profit + (mep_mg + sc * d_flag), 4)
+                        Billboard_seed_data.append(str(round(time.time() - ss_start_time + Billboard_ss_acc_time, 4)) + '\t' + str(mep_k_prod) + '\t' + str(mep_i_node) + '\t' +
+                                                   str(Billboard_now_budget) + '\t' + str(Billboard_now_profit) + '\t' + str([len(Billboard_seed_set[k]) for k in range(num_product)]) + '\n')
 
-                    if self.diff_seed_option:
-                        Billboard_celf_heap = [celf_item for celf_item in Billboard_celf_heap if celf_item[2] != mep_i_node]
-                        heap.heapify_max(Billboard_celf_heap)
-                else:
-                    seed_set_t = copy.deepcopy(Billboard_seed_set)
-                    seed_set_t[mep_k_prod].add(mep_i_node)
-                    ep_t = diff.getSeedSetProfitBCS(seed_set_t) - sc * d_flag
-                    mg_t = round(ep_t - Billboard_now_profit, 4)
-                    flag_t = seed_set_length
+                        if self.diff_seed_option:
+                            Billboard_celf_heap = [celf_item for celf_item in Billboard_celf_heap if celf_item[2] != mep_i_node]
+                            heap.heapify_max(Billboard_celf_heap)
+                    else:
+                        seed_set_t = copy.deepcopy(Billboard_seed_set)
+                        seed_set_t[mep_k_prod].add(mep_i_node)
+                        ep_t = diff.getSeedSetProfitBCS(seed_set_t) - sc * d_flag
+                        mg_t = round(ep_t - Billboard_now_profit, 4)
+                        flag_t = seed_set_length
 
-                    if mg_t > 0:
-                        celf_item_t = (mg_t, mep_k_prod, mep_i_node, flag_t)
-                        heap.heappush_max(Billboard_celf_heap, celf_item_t)
+                        if mg_t > 0:
+                            celf_item_t = (mg_t, mep_k_prod, mep_i_node, flag_t)
+                            heap.heappush_max(Billboard_celf_heap, celf_item_t)
+                Billboard_seed_data_sequence[now_bi_index] = Billboard_seed_data
+                for wd in wd_seq:
+                    seed_data_path = 'seed_data/' + self.new_dataset_name + '_' + self.cascade_model + '_' + self.seed_cost_option
+                    if not os.path.isdir(seed_data_path):
+                        os.mkdir(seed_data_path)
+                    seed_data_path0 = seed_data_path + '/' + self.model_name + '_ds' * self.diff_seed_option
+                    if not os.path.isdir(seed_data_path0):
+                        os.mkdir(seed_data_path0)
+                    seed_data_file = open(seed_data_path0 + '/' + wd + self.new_product_name + '_bi' + str(self.budget_iteration[now_bi_index]) + '_Billboard.txt', 'w')
+                    for sd in Billboard_seed_data:
+                        seed_data_file.write(sd)
+                    seed_data_file.close()
 
-            [Handbill_ss_acc_time, Handbill_now_budget, Handbill_now_profit, Handbill_seed_set, Handbill_celf_heap] = Handbill_temp_sequence.pop()
-            Handbill_seed_data = Handbill_temp_seed_data.pop()
-            Handbill_celf_heap_c = []
-            while Handbill_now_budget < total_budget and Handbill_celf_heap:
-                if round(Handbill_now_budget + seed_cost_dict[Handbill_celf_heap[0][1]][Handbill_celf_heap[0][2]], 4) >= total_budget and bud_iteration and not Handbill_temp_sequence:
-                    Handbill_celf_heap_c = copy.deepcopy(Handbill_celf_heap)
-                mep_item = heap.heappop_max(Handbill_celf_heap)
-                mep_mg, mep_k_prod, mep_i_node, mep_flag = mep_item
-                sc = seed_cost_dict[mep_k_prod][mep_i_node]
-                seed_set_length = sum(len(Handbill_seed_set[k]) for k in range(num_product))
+            if Handbill_temp_sequence:
+                [Handbill_ss_acc_time, Handbill_now_budget, Handbill_now_profit, Handbill_seed_set, Handbill_celf_heap] = Handbill_temp_sequence.pop()
+                Handbill_seed_data = Handbill_temp_seed_data.pop()
+                Handbill_celf_heap_c = []
+                while Handbill_now_budget < total_budget and Handbill_celf_heap:
+                    if round(Handbill_now_budget + seed_cost_dict[Handbill_celf_heap[0][1]][Handbill_celf_heap[0][2]], 4) >= total_budget and bud_iteration and not Handbill_temp_sequence:
+                        Handbill_celf_heap_c = copy.deepcopy(Handbill_celf_heap)
+                    mep_item = heap.heappop_max(Handbill_celf_heap)
+                    mep_mg, mep_k_prod, mep_i_node, mep_flag = mep_item
+                    sc = seed_cost_dict[mep_k_prod][mep_i_node]
+                    seed_set_length = sum(len(Handbill_seed_set[k]) for k in range(num_product))
 
-                if round(Handbill_now_budget + sc, 4) >= total_budget and not Handbill_temp_sequence:
-                    ss_time = round(time.time() - ss_start_time + Handbill_ss_acc_time, 4)
-                    Handbill_temp_sequence.append([ss_time, Handbill_now_budget, Handbill_now_profit, copy.deepcopy(Handbill_seed_set), Handbill_celf_heap_c])
-                    Handbill_temp_seed_data.append(Handbill_seed_data.copy())
+                    if round(Handbill_now_budget + sc, 4) >= total_budget and not Handbill_temp_sequence:
+                        ss_time = round(time.time() - ss_start_time + Handbill_ss_acc_time, 4)
+                        Handbill_temp_sequence.append([ss_time, Handbill_now_budget, Handbill_now_profit, copy.deepcopy(Handbill_seed_set), Handbill_celf_heap_c])
+                        Handbill_temp_seed_data.append(Handbill_seed_data.copy())
 
-                if round(Handbill_now_budget + sc, 4) > total_budget:
-                    continue
+                    if round(Handbill_now_budget + sc, 4) > total_budget:
+                        continue
 
-                if mep_flag == seed_set_length:
-                    Handbill_seed_set[mep_k_prod].add(mep_i_node)
-                    Handbill_now_budget = round(Handbill_now_budget + sc, 4)
-                    Handbill_now_profit = round(Handbill_now_profit + (mep_mg * sc + sc * d_flag), 4)
-                    Handbill_seed_data.append(str(round(time.time() - ss_start_time + Handbill_ss_acc_time, 4)) + '\t' + str(mep_k_prod) + '\t' + str(mep_i_node) + '\t' +
-                                              str(Handbill_now_budget) + '\t' + str(Handbill_now_profit) + '\t' + str([len(Handbill_seed_set[k]) for k in range(num_product)]) + '\n')
+                    if mep_flag == seed_set_length:
+                        Handbill_seed_set[mep_k_prod].add(mep_i_node)
+                        Handbill_now_budget = round(Handbill_now_budget + sc, 4)
+                        Handbill_now_profit = round(Handbill_now_profit + (mep_mg * sc + sc * d_flag), 4)
+                        Handbill_seed_data.append(str(round(time.time() - ss_start_time + Handbill_ss_acc_time, 4)) + '\t' + str(mep_k_prod) + '\t' + str(mep_i_node) + '\t' +
+                                                  str(Handbill_now_budget) + '\t' + str(Handbill_now_profit) + '\t' + str([len(Handbill_seed_set[k]) for k in range(num_product)]) + '\n')
 
-                    if self.diff_seed_option:
-                        Handbill_celf_heap = [celf_item for celf_item in Handbill_celf_heap if celf_item[2] != mep_i_node]
-                        heap.heapify_max(Handbill_celf_heap)
-                else:
-                    seed_set_t = copy.deepcopy(Handbill_seed_set)
-                    seed_set_t[mep_k_prod].add(mep_i_node)
-                    ep_t = diff.getSeedSetProfitBCS(seed_set_t) - sc * d_flag
-                    mg_t = round(ep_t - Handbill_now_profit, 4)
-                    mg_t = safe_div(mg_t, sc)
-                    flag_t = seed_set_length
+                        if self.diff_seed_option:
+                            Handbill_celf_heap = [celf_item for celf_item in Handbill_celf_heap if celf_item[2] != mep_i_node]
+                            heap.heapify_max(Handbill_celf_heap)
+                    else:
+                        seed_set_t = copy.deepcopy(Handbill_seed_set)
+                        seed_set_t[mep_k_prod].add(mep_i_node)
+                        ep_t = diff.getSeedSetProfitBCS(seed_set_t) - sc * d_flag
+                        mg_t = round(ep_t - Handbill_now_profit, 4)
+                        mg_t = safe_div(mg_t, sc)
+                        flag_t = seed_set_length
 
-                    if mg_t > 0:
-                        celf_item_t = (mg_t, mep_k_prod, mep_i_node, flag_t)
-                        heap.heappush_max(Handbill_celf_heap, celf_item_t)
+                        if mg_t > 0:
+                            celf_item_t = (mg_t, mep_k_prod, mep_i_node, flag_t)
+                            heap.heappush_max(Handbill_celf_heap, celf_item_t)
+                Handbill_seed_data_sequence[now_bi_index] = Handbill_seed_data
+                for wd in wd_seq:
+                    seed_data_path = 'seed_data/' + self.new_dataset_name + '_' + self.cascade_model + '_' + self.seed_cost_option
+                    if not os.path.isdir(seed_data_path):
+                        os.mkdir(seed_data_path)
+                    seed_data_path0 = seed_data_path + '/' + self.model_name + '_ds' * self.diff_seed_option
+                    if not os.path.isdir(seed_data_path0):
+                        os.mkdir(seed_data_path0)
+                    seed_data_file = open(seed_data_path0 + '/' + wd + self.new_product_name + '_bi' + str(self.budget_iteration[now_bi_index]) + '_Handbill.txt', 'w')
+                    for sd in Handbill_seed_data:
+                        seed_data_file.write(sd)
+                    seed_data_file.close()
 
             ss_start_time = time.time()
             final_seed_set = copy.deepcopy(Billboard_seed_set)
@@ -901,28 +927,12 @@ class Model:
             print('ss_time = ' + str(ss_time) + 'sec, cost = ' + str(final_bud) + ', seed_set_length = ' + str([len(s_set_k) for s_set_k in final_seed_set]))
             seed_set_sequence[now_bi_index] = copy.deepcopy(final_seed_set)
             ss_time_sequence[now_bi_index] = ss_time
-            Billboard_seed_data_sequence[now_bi_index] = Billboard_seed_data
-            Handbill_seed_data_sequence[now_bi_index] = Handbill_seed_data
             Final_seed_data_sequence[now_bi_index] = Final_seed_data
 
             for wd in wd_seq:
                 seed_data_path = 'seed_data/' + self.new_dataset_name + '_' + self.cascade_model + '_' + self.seed_cost_option
                 if not os.path.isdir(seed_data_path):
                     os.mkdir(seed_data_path)
-                seed_data_path0 = seed_data_path + '/' + self.model_name + '_ds' * self.diff_seed_option
-                if not os.path.isdir(seed_data_path0):
-                    os.mkdir(seed_data_path0)
-                seed_data_file = open(seed_data_path0 + '/' + wd + self.new_product_name + '_bi' + str(self.budget_iteration[now_bi_index]) + '_Billboard.txt', 'w')
-                for sd in Billboard_seed_data:
-                    seed_data_file.write(sd)
-                seed_data_file.close()
-                seed_data_path0 = seed_data_path + '/' + self.model_name + '_ds' * self.diff_seed_option
-                if not os.path.isdir(seed_data_path0):
-                    os.mkdir(seed_data_path0)
-                seed_data_file = open(seed_data_path0 + '/' + wd + self.new_product_name + '_bi' + str(self.budget_iteration[now_bi_index]) + '_Handbill.txt', 'w')
-                for sd in Handbill_seed_data:
-                    seed_data_file.write(sd)
-                seed_data_file.close()
                 seed_data_path0 = seed_data_path + '/' + self.model_name + '_ds' * self.diff_seed_option
                 if not os.path.isdir(seed_data_path0):
                     os.mkdir(seed_data_path0)
@@ -1036,6 +1046,18 @@ class Model:
                         if mg_t > 0:
                             celf_item_t = (mg_t, mep_k_prod, mep_i_node, flag_t)
                             heap.heappush_max(Billboard_celf_heap, celf_item_t)
+                Billboard_seed_data_sequence[now_bi_index] = Billboard_seed_data
+                for wd in wd_seq:
+                    seed_data_path = 'seed_data/' + self.new_dataset_name + '_' + self.cascade_model + '_' + self.seed_cost_option
+                    if not os.path.isdir(seed_data_path):
+                        os.mkdir(seed_data_path)
+                    seed_data_path0 = seed_data_path + '/' + self.model_name + '_ds' * self.diff_seed_option
+                    if not os.path.isdir(seed_data_path0):
+                        os.mkdir(seed_data_path0)
+                    seed_data_file = open(seed_data_path0 + '/' + wd + self.new_product_name + '_bi' + str(self.budget_iteration[now_bi_index]) + '_Billboard.txt', 'w')
+                    for sd in Billboard_seed_data:
+                        seed_data_file.write(sd)
+                    seed_data_file.close()
 
             if Handbill_temp_sequence:
                 [Handbill_ss_acc_time, Handbill_now_budget, Handbill_now_profit, Handbill_seed_set, Handbill_seed_mioa_dict, Handbill_celf_heap] = Handbill_temp_sequence.pop()
@@ -1078,6 +1100,18 @@ class Model:
                         if mg_t > 0:
                             celf_item_t = (mg_t, mep_k_prod, mep_i_node, flag_t)
                             heap.heappush_max(Handbill_celf_heap, celf_item_t)
+                Handbill_seed_data_sequence[now_bi_index] = Handbill_seed_data
+                for wd in wd_seq:
+                    seed_data_path = 'seed_data/' + self.new_dataset_name + '_' + self.cascade_model + '_' + self.seed_cost_option
+                    if not os.path.isdir(seed_data_path):
+                        os.mkdir(seed_data_path)
+                    seed_data_path0 = seed_data_path + '/' + self.model_name + '_ds' * self.diff_seed_option
+                    if not os.path.isdir(seed_data_path0):
+                        os.mkdir(seed_data_path0)
+                    seed_data_file = open(seed_data_path0 + '/' + wd + self.new_product_name + '_bi' + str(self.budget_iteration[now_bi_index]) + '_Handbill.txt', 'w')
+                    for sd in Handbill_seed_data:
+                        seed_data_file.write(sd)
+                    seed_data_file.close()
 
             ss_start_time = time.time()
             final_seed_set = copy.deepcopy(Billboard_seed_set)
@@ -1153,28 +1187,12 @@ class Model:
             print('ss_time = ' + str(ss_time) + 'sec, cost = ' + str(final_bud) + ', seed_set_length = ' + str([len(s_set_k) for s_set_k in final_seed_set]))
             seed_set_sequence[now_bi_index] = copy.deepcopy(final_seed_set)
             ss_time_sequence[now_bi_index] = ss_time
-            Billboard_seed_data_sequence[now_bi_index] = Billboard_seed_data
-            Handbill_seed_data_sequence[now_bi_index] = Handbill_seed_data
             Final_seed_data_sequence[now_bi_index] = Final_seed_data
 
             for wd in wd_seq:
                 seed_data_path = 'seed_data/' + self.new_dataset_name + '_' + self.cascade_model + '_' + self.seed_cost_option
                 if not os.path.isdir(seed_data_path):
                     os.mkdir(seed_data_path)
-                seed_data_path0 = seed_data_path + '/' + self.model_name + '_ds' * self.diff_seed_option
-                if not os.path.isdir(seed_data_path0):
-                    os.mkdir(seed_data_path0)
-                seed_data_file = open(seed_data_path0 + '/' + wd + self.new_product_name + '_bi' + str(self.budget_iteration[now_bi_index]) + '_Billboard.txt', 'w')
-                for sd in Billboard_seed_data:
-                    seed_data_file.write(sd)
-                seed_data_file.close()
-                seed_data_path0 = seed_data_path + '/' + self.model_name + '_ds' * self.diff_seed_option
-                if not os.path.isdir(seed_data_path0):
-                    os.mkdir(seed_data_path0)
-                seed_data_file = open(seed_data_path0 + '/' + wd + self.new_product_name + '_bi' + str(self.budget_iteration[now_bi_index]) + '_Handbill_.txt', 'w')
-                for sd in Handbill_seed_data:
-                    seed_data_file.write(sd)
-                seed_data_file.close()
                 seed_data_path0 = seed_data_path + '/' + self.model_name + '_ds' * self.diff_seed_option
                 if not os.path.isdir(seed_data_path0):
                     os.mkdir(seed_data_path0)
