@@ -20,6 +20,7 @@ model_seq = ['mmioaepw', 'mmioadepw', 'mmioarepw', 'mmioardepw',
              'mngr', 'mngrd', 'mngrpw', 'mngrdpw',
              'mhd', 'mr']
 
+# result
 for data_setting in dataset_seq:
     dataset_name = 'email' * (data_setting == 1) + 'dnc_email' * (data_setting == 2) + \
                    'email_Eu_core' * (data_setting == 3) + 'NetHEPT' * (data_setting == 4)
@@ -58,10 +59,13 @@ for data_setting in dataset_seq:
                                     new_result_name = new_path + '/' + wallet_distribution_type + '_' + new_product_name + '_bi' + str(bi) + '.txt'
                                     if not os.path.isfile(new_result_name):
                                         os.rename(result_name, new_result_name)
+                                    if os.path.isfile(result_name):
+                                        os.remove(result_name)
 
                                 except FileNotFoundError:
                                     continue
 
+# seed data
 for data_setting in dataset_seq:
     dataset_name = 'email' * (data_setting == 1) + 'dnc_email' * (data_setting == 2) + \
                    'email_Eu_core' * (data_setting == 3) + 'NetHEPT' * (data_setting == 4)
@@ -98,10 +102,13 @@ for data_setting in dataset_seq:
                                     new_result_name = new_path + '/' + wallet_distribution_type + '_' + new_product_name + '_bi' + str(bi) + '.txt'
                                     if not os.path.isfile(new_result_name):
                                         os.rename(result_name, new_result_name)
+                                    if os.path.isfile(result_name):
+                                        os.remove(result_name)
 
                                 except FileNotFoundError:
                                     continue
 
+# heap order
 for data_setting in dataset_seq:
     dataset_name = 'email' * (data_setting == 1) + 'dnc_email' * (data_setting == 2) + \
                    'email_Eu_core' * (data_setting == 3) + 'NetHEPT' * (data_setting == 4)
@@ -138,6 +145,8 @@ for data_setting in dataset_seq:
                                     new_result_name = new_path + '/' + wallet_distribution_type + '_' + new_product_name + '.txt'
                                     if not os.path.isfile(new_result_name):
                                         os.rename(result_name, new_result_name)
+                                    if os.path.isfile(result_name):
+                                        os.remove(result_name)
 
                                 except FileNotFoundError:
                                     continue
