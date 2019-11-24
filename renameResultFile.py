@@ -5,7 +5,7 @@ sc_option_seq = [1, 2, 3]
 ds_option_seq = [1, 2]
 cm_seq = [1, 2]
 prod_seq = [1, 2]
-wallet_distribution_seq = [1, 2]
+wallet_distribution_seq = [1, 2, 3]
 model_seq = ['mmioaepw', 'mmioadepw', 'mmioarepw', 'mmioardepw',
              'mdag1epw', 'mdag1depw', 'mdag1repw', 'mdag1rdepw',
              'mdag2epw', 'mdag2depw', 'mdag2repw', 'mdag2rdepw',
@@ -36,8 +36,8 @@ for data_setting in dataset_seq:
                     for prod_setting in prod_seq:
                         product_name = 'item_lphc' * (prod_setting == 1) + 'item_hplc' * (prod_setting == 2)
                         new_product_name = 'lphc' * (prod_setting == 1) + 'hplc' * (prod_setting == 2)
-                        for wallet_distribution in wallet_distribution_seq:
-                            wallet_distribution_type = 'm50e25' * (wallet_distribution == 1) + 'm99e96' * (wallet_distribution == 2)
+                        for wd in wallet_distribution_seq:
+                            wallet_distribution_type = 'm50e25' * (wd == 1) + 'm99e96' * (wd == 2) + 'm66e34' * (wd == 3)
 
                             # r = dataset_name + '\t' + seed_cost_option + '\t' + cascade_model + '\t' + \
                             #     wallet_distribution_type + '\t' + product_name + '\t' + str(diff_seed_option) + '\t' + str(bi)
@@ -81,8 +81,8 @@ for data_setting in dataset_seq:
                     for prod_setting in prod_seq:
                         product_name = 'item_lphc' * (prod_setting == 1) + 'item_hplc' * (prod_setting == 2)
                         new_product_name = 'lphc' * (prod_setting == 1) + 'hplc' * (prod_setting == 2)
-                        for wallet_distribution in wallet_distribution_seq:
-                            wallet_distribution_type = 'm50e25' * (wallet_distribution == 1) + 'm99e96' * (wallet_distribution == 2)
+                        for wd in wallet_distribution_seq:
+                            wallet_distribution_type = 'm50e25' * (wd == 1) + 'm99e96' * (wd == 2) + 'm66e34' * (wd == 3)
 
                             r = new_dataset_name + '\t' + seed_cost_option + '\t' + cascade_model + '\t' + \
                                 wallet_distribution_type + '\t' + new_product_name + '\t' + str(diff_seed_option) + '\t' + str(bi)
@@ -124,8 +124,8 @@ for data_setting in dataset_seq:
                     for prod_setting in prod_seq:
                         product_name = 'item_lphc' * (prod_setting == 1) + 'item_hplc' * (prod_setting == 2)
                         new_product_name = 'lphc' * (prod_setting == 1) + 'hplc' * (prod_setting == 2)
-                        for wallet_distribution in wallet_distribution_seq:
-                            wallet_distribution_type = 'm50e25' * (wallet_distribution == 1) + 'm99e96' * (wallet_distribution == 2)
+                        for wd in wallet_distribution_seq:
+                            wallet_distribution_type = 'm50e25' * (wd == 1) + 'm99e96' * (wd == 2) + 'm66e34' * (wd == 3)
 
                             r = new_dataset_name + '\t' + seed_cost_option + '\t' + cascade_model + '\t' + \
                                 wallet_distribution_type + '\t' + new_product_name + '\t' + str(diff_seed_option) + '\t' + str(bi)
