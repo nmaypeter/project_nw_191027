@@ -95,6 +95,9 @@ class Initialization:
             elif self.wallet_dist_type == 'm99e96':
                 mu = sum(price_list)
                 sigma = abs(min(price_list) - mu) / 3
+            elif self.wallet_dist_type == 'm66e34':
+                mu = sum(price_list[0]) * 0.4167
+                sigma = abs(max(price_list[0]) - mu) / 0.4125
             X = np.arange(0, 2, 0.001)
             Y = stats.norm.sf(X, mu, sigma)
             pw_list = [round(float(Y[np.argwhere(X == p)]), 4) for p in price_list]
