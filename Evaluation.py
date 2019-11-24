@@ -19,12 +19,11 @@ class Evaluation:
         s_total_set = set(s for k in range(self.num_product) for s in s_set[k])
         a_n_set = [s_total_set.copy() for _ in range(self.num_product)]
         a_n_sequence, a_n_sequence2 = [(k, s) for k in range(self.num_product) for s in s_set[k]], []
-        pro_k_list = [0.0 for _ in range(self.num_product)]
         wallet_dict = self.wallet_dict.copy()
 
         while a_n_sequence:
             k_prod, i_node = a_n_sequence.pop(choice([i for i in range(len(a_n_sequence))]))
-            benefit, price = self.product_list[k_prod][0], self.product_list[k_prod][2]
+            price = self.product_list[k_prod][2]
 
             for ii_node in self.graph_dict[i_node]:
                 if random.random() > self.graph_dict[i_node][ii_node]:
@@ -39,7 +38,6 @@ class Evaluation:
                 # -- purchasing --
                 a_n_set[k_prod].add(ii_node)
                 wallet_dict[ii_node] -= price
-                pro_k_list[k_prod] += benefit
 
                 # -- passing the information --
                 if ii_node in self.graph_dict:
@@ -48,10 +46,9 @@ class Evaluation:
             if not a_n_sequence:
                 a_n_sequence, a_n_sequence2 = a_n_sequence2, a_n_sequence
 
-        pro_k_list = [round(pro_k, 4) for pro_k in pro_k_list]
-        pnn_k_list = [len(a_n_set[k]) - len(s_set[k]) for k in range(self.num_product)]
+        pnn_k_list = [len(a_n_set[k]) - len(s_total_set) for k in range(self.num_product)]
 
-        return pro_k_list, pnn_k_list
+        return pnn_k_list
 
 
 class EvaluationM:
@@ -82,18 +79,17 @@ class EvaluationM:
         eva = Evaluation(graph_dict, product_list, wallet_dict)
         print('@ ' + self.model_name + ' evaluation @ dataset_name = ' + self.dataset_name + '_' + self.cascade_model + ', product_name = ' + self.product_name +
               ', seed_cost_option = ' + self.seed_cost_option + ', wd = ' + wallet_distribution_type)
-        sample_pro_k, sample_pnn_k = [0.0 for _ in range(num_product)], [0 for _ in range(num_product)]
+        sample_pnn_k = [0.0 for _ in range(num_product)]
 
         for _ in range(self.eva_monte_carlo):
-            pro_k_list, pnn_k_list = eva.getSeedSetProfit(sample_seed_set)
-            sample_pro_k = [(pro_k + sample_pro_k) for pro_k, sample_pro_k in zip(pro_k_list, sample_pro_k)]
+            pnn_k_list = eva.getSeedSetProfit(sample_seed_set)
             sample_pnn_k = [(pnn_k + sample_pnn_k) for pnn_k, sample_pnn_k in zip(pnn_k_list, sample_pnn_k)]
-        sample_pro_k = [round(sample_pro_k / self.eva_monte_carlo, 4) for sample_pro_k in sample_pro_k]
         sample_pnn_k = [round(sample_pnn_k / self.eva_monte_carlo, 4) for sample_pnn_k in sample_pnn_k]
-        sample_bud_k = [round(sum(seed_cost_dict[sample_seed_set.index(sample_bud_k)][i] for i in sample_bud_k), 4) for sample_bud_k in sample_seed_set]
+        sample_pro_k = [round(sample_pnn_k[k] * product_list[k][0], 4) for k in range(num_product)]
         sample_sn_k = [len(sample_sn_k) for sample_sn_k in sample_seed_set]
-        sample_pro = round(sum(sample_pro_k), 4)
+        sample_bud_k = [round(sum(seed_cost_dict[k][i] for i in sample_seed_set[k]), 4) for k in range(num_product)]
         sample_bud = round(sum(sample_bud_k), 4)
+        sample_pro = round(sum(sample_pro_k), 4)
 
         result = [sample_pro, sample_bud, sample_sn_k, sample_pnn_k, sample_pro_k, sample_bud_k, sample_seed_set]
         print('eva_time = ' + str(round(time.time() - eva_start_time, 2)) + 'sec')
