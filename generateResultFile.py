@@ -5,7 +5,7 @@ sc_option_seq = [1, 2, 3]
 ds_option_seq = [1, 2]
 cm_seq = [1, 2]
 prod_seq = [1, 2]
-wallet_distribution_seq = [1, 2]
+wallet_distribution_seq = [1, 2, 3]
 model_seq = ['mmioaepw', 'mmioadepw', 'mmioarepw', 'mmioardepw',
              'mdag1epw', 'mdag1depw', 'mdag1repw', 'mdag1rdepw',
              'mdag2epw', 'mdag2depw', 'mdag2repw', 'mdag2rdepw',
@@ -59,11 +59,13 @@ for data_setting in dataset_seq:
                                                 continue
                                             elif lnum == 3:
                                                 (l) = line.split()
-                                                p = float(l[-1])
-                                            elif lnum == 4:
-                                                (l) = line.split()
-                                                c = float(l[-1])
-                                                profit.append(str(round(p - c, 4)))
+                                                # p = float(l[-1])
+                                                p = l[-1]
+                                                profit.append(p)
+                                            # elif lnum == 4:
+                                            #     (l) = line.split()
+                                            #     c = float(l[-1])
+                                            #     profit.append(str(round(p - c, 4)))
                                             else:
                                                 break
                                 except FileNotFoundError:
