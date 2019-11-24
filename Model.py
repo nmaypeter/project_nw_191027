@@ -94,8 +94,9 @@ class Model:
             total_budget = safe_div(total_cost, 2 ** now_b_iter)
             [ss_acc_time, now_budget, now_profit, seed_set, seed_mioa_dict, celf_heap] = temp_sequence.pop()
             seed_data = temp_seed_data.pop()
-            print('@ ' + self.model_name + ' seed selection @ dataset_name = ' + self.dataset_name + '_' + self.cascade_model + ', product_name = ' + self.product_name +
-                  ', seed_cost_option = ' + self.seed_cost_option + ', bud_iter = ' + str(now_b_iter) + ', budget = ' + str(total_budget))
+            print('@ selection @ ' + self.new_dataset_name + '_' + self.cascade_model + '_' + self.seed_cost_option +
+                  '\t' + self.model_name + '_ds' * self.diff_seed_option +
+                  '\t' + self.wallet_distribution_type + '_' + self.new_product_name + '_bi' + str(now_b_iter) + ', budget = ' + str(total_budget))
 
             celf_heap_c = []
             while now_budget < total_budget and celf_heap:
@@ -210,8 +211,9 @@ class Model:
             total_budget = safe_div(total_cost, 2 ** now_b_iter)
             [ss_acc_time, now_budget, now_profit, seed_set, seed_dag_dict, mep_seed_dag_dict, celf_heap] = temp_sequence.pop()
             seed_data = temp_seed_data.pop()
-            print('@ ' + self.model_name + ' seed selection @ dataset_name = ' + self.dataset_name + '_' + self.cascade_model + ', product_name = ' + self.product_name +
-                  ', seed_cost_option = ' + self.seed_cost_option + ', bud_iter = ' + str(now_b_iter) + ', budget = ' + str(total_budget))
+            print('@ selection @ ' + self.new_dataset_name + '_' + self.cascade_model + '_' + self.seed_cost_option +
+                  '\t' + self.model_name + '_ds' * self.diff_seed_option +
+                  '\t' + self.wallet_distribution_type + '_' + self.new_product_name + '_bi' + str(now_b_iter) + ', budget = ' + str(total_budget))
 
             celf_heap_c = []
             while now_budget < total_budget and celf_heap:
@@ -334,8 +336,9 @@ class Model:
             total_budget = safe_div(total_cost, 2 ** now_b_iter)
             [ss_acc_time, now_budget, now_profit, seed_set, seed_dag_dict, mep_seed_dag_dict, celf_heap] = temp_sequence.pop()
             seed_data = temp_seed_data.pop()
-            print('@ ' + self.model_name + ' seed selection @ dataset_name = ' + self.dataset_name + '_' + self.cascade_model + ', product_name = ' + self.product_name +
-                  ', seed_cost_option = ' + self.seed_cost_option + ', bud_iter = ' + str(now_b_iter) + ', budget = ' + str(total_budget))
+            print('@ selection @ ' + self.new_dataset_name + '_' + self.cascade_model + '_' + self.seed_cost_option +
+                  '\t' + self.model_name + '_ds' * self.diff_seed_option +
+                  '\t' + self.wallet_distribution_type + '_' + self.new_product_name + '_bi' + str(now_b_iter) + ', budget = ' + str(total_budget))
 
             celf_heap_c = []
             while now_budget < total_budget and celf_heap:
@@ -451,8 +454,9 @@ class Model:
             total_budget = safe_div(total_cost, 2 ** now_b_iter)
             [ss_acc_time, now_budget, now_profit, seed_set, celf_heap] = temp_sequence.pop()
             seed_data = temp_seed_data.pop()
-            print('@ ' + self.model_name + ' seed selection @ dataset_name = ' + self.dataset_name + '_' + self.cascade_model + ', product_name = ' + self.product_name +
-                  ', seed_cost_option = ' + self.seed_cost_option + ', bud_iter = ' + str(now_b_iter) + ', budget = ' + str(total_budget))
+            print('@ selection @ ' + self.new_dataset_name + '_' + self.cascade_model + '_' + self.seed_cost_option +
+                  '\t' + self.model_name + '_ds' * self.diff_seed_option +
+                  '\t' + self.wallet_distribution_type + '_' + self.new_product_name + '_bi' + str(now_b_iter) + ', budget = ' + str(total_budget))
 
             celf_heap_c = []
             while now_budget < total_budget and celf_heap:
@@ -558,8 +562,9 @@ class Model:
             total_budget = safe_div(total_cost, 2 ** now_b_iter)
             [ss_acc_time, now_budget, seed_set, degree_heap] = temp_sequence.pop()
             seed_data = temp_seed_data.pop()
-            print('@ ' + self.model_name + ' seed selection @ dataset_name = ' + self.dataset_name + '_' + self.cascade_model + ', product_name = ' + self.product_name +
-                  ', seed_cost_option = ' + self.seed_cost_option + ', bud_iter = ' + str(now_b_iter) + ', budget = ' + str(total_budget))
+            print('@ selection @ ' + self.new_dataset_name + '_' + self.cascade_model + '_' + self.seed_cost_option +
+                  '\t' + self.model_name + '_ds' * self.diff_seed_option +
+                  '\t' + self.wallet_distribution_type + '_' + self.new_product_name + '_bi' + str(now_b_iter) + ', budget = ' + str(total_budget))
 
             degree_heap_c = []
             while now_budget < total_budget and degree_heap:
@@ -649,8 +654,9 @@ class Model:
             total_budget = safe_div(total_cost, 2 ** now_b_iter)
             [ss_acc_time, now_budget, seed_set, random_node_list] = temp_sequence.pop()
             seed_data = temp_seed_data.pop()
-            print('@ ' + self.model_name + ' seed selection @ dataset_name = ' + self.dataset_name + '_' + self.cascade_model + ', product_name = ' + self.product_name +
-                  ', seed_cost_option = ' + self.seed_cost_option + ', bud_iter = ' + str(now_b_iter) + ', budget = ' + str(total_budget))
+            print('@ selection @ ' + self.new_dataset_name + '_' + self.cascade_model + '_' + self.seed_cost_option +
+                  '\t' + self.model_name + '_ds' * self.diff_seed_option +
+                  '\t' + self.wallet_distribution_type + '_' + self.new_product_name + '_bi' + str(now_b_iter) + ', budget = ' + str(total_budget))
 
             random_node_list_c = []
             while now_budget < total_budget and random_node_list:
@@ -743,8 +749,9 @@ class Model:
             now_b_iter = bud_iteration.pop(0)
             now_bi_index = self.budget_iteration.index(now_b_iter)
             total_budget = safe_div(total_cost, 2 ** now_b_iter)
-            print('@ ' + self.model_name + ' seed selection @ dataset_name = ' + self.dataset_name + '_' + self.cascade_model + ', product_name = ' + self.product_name +
-                  ', seed_cost_option = ' + self.seed_cost_option + ', bud_iter = ' + str(now_b_iter) + ', budget = ' + str(total_budget))
+            print('@ selection @ ' + self.new_dataset_name + '_' + self.cascade_model + '_' + self.seed_cost_option +
+                  '\t' + self.model_name + '_ds' * self.diff_seed_option +
+                  '\t' + self.wallet_distribution_type + '_' + self.new_product_name + '_bi' + str(now_b_iter) + ', budget = ' + str(total_budget))
 
             ss_start_time = time.time()
             if Billboard_temp_sequence:
@@ -795,7 +802,7 @@ class Model:
                     seed_data_path0 = seed_data_path + '/' + self.model_name + '_ds' * self.diff_seed_option
                     if not os.path.isdir(seed_data_path0):
                         os.mkdir(seed_data_path0)
-                    seed_data_file = open(seed_data_path0 + '/' + wd + self.new_product_name + '_bi' + str(self.budget_iteration[now_bi_index]) + '_Billboard.txt', 'w')
+                    seed_data_file = open(seed_data_path0 + '/' + wd + '_' + self.new_product_name + '_bi' + str(self.budget_iteration[now_bi_index]) + '_Billboard.txt', 'w')
                     for sd in Billboard_seed_data:
                         seed_data_file.write(sd)
                     seed_data_file.close()
@@ -849,7 +856,7 @@ class Model:
                     seed_data_path0 = seed_data_path + '/' + self.model_name + '_ds' * self.diff_seed_option
                     if not os.path.isdir(seed_data_path0):
                         os.mkdir(seed_data_path0)
-                    seed_data_file = open(seed_data_path0 + '/' + wd + self.new_product_name + '_bi' + str(self.budget_iteration[now_bi_index]) + '_Handbill.txt', 'w')
+                    seed_data_file = open(seed_data_path0 + '/' + wd + '_' + self.new_product_name + '_bi' + str(self.budget_iteration[now_bi_index]) + '_Handbill.txt', 'w')
                     for sd in Handbill_seed_data:
                         seed_data_file.write(sd)
                     seed_data_file.close()
@@ -936,7 +943,7 @@ class Model:
                 seed_data_path0 = seed_data_path + '/' + self.model_name + '_ds' * self.diff_seed_option
                 if not os.path.isdir(seed_data_path0):
                     os.mkdir(seed_data_path0)
-                seed_data_file = open(seed_data_path0 + '/' + wd + self.new_product_name + '_bi' + str(self.budget_iteration[now_bi_index]) + '_Final.txt', 'w')
+                seed_data_file = open(seed_data_path0 + '/' + wd + '_' + self.new_product_name + '_bi' + str(self.budget_iteration[now_bi_index]) + '_Final.txt', 'w')
                 for sd in Final_seed_data:
                     seed_data_file.write(sd)
                 seed_data_file.close()
@@ -1000,8 +1007,9 @@ class Model:
             now_b_iter = bud_iteration.pop(0)
             now_bi_index = self.budget_iteration.index(now_b_iter)
             total_budget = safe_div(total_cost, 2 ** now_b_iter)
-            print('@ ' + self.model_name + ' seed selection @ dataset_name = ' + self.dataset_name + '_' + self.cascade_model + ', product_name = ' + self.product_name +
-                  ', seed_cost_option = ' + self.seed_cost_option + ', bud_iter = ' + str(now_b_iter) + ', budget = ' + str(total_budget))
+            print('@ selection @ ' + self.new_dataset_name + '_' + self.cascade_model + '_' + self.seed_cost_option +
+                  '\t' + self.model_name + '_ds' * self.diff_seed_option +
+                  '\t' + self.wallet_distribution_type + '_' + self.new_product_name + '_bi' + str(now_b_iter) + ', budget = ' + str(total_budget))
 
             ss_start_time = time.time()
 
@@ -1054,7 +1062,7 @@ class Model:
                     seed_data_path0 = seed_data_path + '/' + self.model_name + '_ds' * self.diff_seed_option
                     if not os.path.isdir(seed_data_path0):
                         os.mkdir(seed_data_path0)
-                    seed_data_file = open(seed_data_path0 + '/' + wd + self.new_product_name + '_bi' + str(self.budget_iteration[now_bi_index]) + '_Billboard.txt', 'w')
+                    seed_data_file = open(seed_data_path0 + '/' + wd + '_' + self.new_product_name + '_bi' + str(self.budget_iteration[now_bi_index]) + '_Billboard.txt', 'w')
                     for sd in Billboard_seed_data:
                         seed_data_file.write(sd)
                     seed_data_file.close()
@@ -1108,7 +1116,7 @@ class Model:
                     seed_data_path0 = seed_data_path + '/' + self.model_name + '_ds' * self.diff_seed_option
                     if not os.path.isdir(seed_data_path0):
                         os.mkdir(seed_data_path0)
-                    seed_data_file = open(seed_data_path0 + '/' + wd + self.new_product_name + '_bi' + str(self.budget_iteration[now_bi_index]) + '_Handbill.txt', 'w')
+                    seed_data_file = open(seed_data_path0 + '/' + wd + '_' + self.new_product_name + '_bi' + str(self.budget_iteration[now_bi_index]) + '_Handbill.txt', 'w')
                     for sd in Handbill_seed_data:
                         seed_data_file.write(sd)
                     seed_data_file.close()
@@ -1196,7 +1204,7 @@ class Model:
                 seed_data_path0 = seed_data_path + '/' + self.model_name + '_ds' * self.diff_seed_option
                 if not os.path.isdir(seed_data_path0):
                     os.mkdir(seed_data_path0)
-                seed_data_file = open(seed_data_path0 + '/' + wd + self.new_product_name + '_bi' + str(self.budget_iteration[now_bi_index]) + '_Final.txt', 'w')
+                seed_data_file = open(seed_data_path0 + '/' + wd + '_' + self.new_product_name + '_bi' + str(self.budget_iteration[now_bi_index]) + '_Final.txt', 'w')
                 for sd in Final_seed_data:
                     seed_data_file.write(sd)
                 seed_data_file.close()
