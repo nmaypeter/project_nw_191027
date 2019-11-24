@@ -77,8 +77,9 @@ class EvaluationM:
         total_budget = round(total_cost / 2 ** bi, 4)
 
         eva = Evaluation(graph_dict, product_list, wallet_dict)
-        print('@ ' + self.model_name + ' evaluation @ dataset_name = ' + self.dataset_name + '_' + self.cascade_model + ', product_name = ' + self.product_name +
-              ', seed_cost_option = ' + self.seed_cost_option + ', wd = ' + wallet_distribution_type)
+        print('@ evaluation @ ' + self.new_dataset_name + '_' + self.cascade_model + '_' + self.seed_cost_option +
+              '\t' + self.model_name + '_ds' * self.diff_seed_option +
+              '\t' + wallet_distribution_type + '_' + self.new_product_name + '_bi' + str(bi))
         sample_pnn_k = [0.0 for _ in range(num_product)]
 
         for _ in range(self.eva_monte_carlo):
@@ -105,27 +106,29 @@ class EvaluationM:
         result_name = path + '/' + wallet_distribution_type + '_' + self.new_product_name + '_bi' + str(bi) + '.txt'
 
         fw = open(result_name, 'w')
-        fw.write(self.model_name + ', ' + wallet_distribution_type + ', ' + self.dataset_name + '_' + self.cascade_model + ', ' + self.product_name +
-                 ', seed_cost_option = ' + self.seed_cost_option + '\n\n' +
-                 'total_budget = ' + str(total_budget) + '\n' +
+        fw.write(self.new_dataset_name + '_' + self.cascade_model + '_' + self.seed_cost_option + '\t' +
+                 self.model_name + '_ds' * self.diff_seed_option +'\t' +
+                 wallet_distribution_type + '_' + self.new_product_name + '_bi' + str(bi) + '\n' +
+                 'budget_limit = ' + str(total_budget) + '\n' +
+                 'time = ' + str(ss_time) + '\n\n' +
                  'profit = ' + str(sample_pro) + '\n' +
-                 'budget = ' + str(sample_bud) + '\n' +
-                 'time = ' + str(ss_time) + '\n')
-        fw.write('\nprofit_ratio =')
+                 'budget = ' + str(sample_bud) + '\n')
+        fw.write('\nprofit_ratio = ')
         for kk in range(num_product):
-            fw.write(' ' + str(sample_pro_k[kk]))
-        fw.write('\nbudget_ratio =')
+            fw.write(str(sample_pro_k[kk]) + '\t')
+        fw.write('\nbudget_ratio = ')
         for kk in range(num_product):
-            fw.write(' ' + str(sample_bud_k[kk]))
-        fw.write('\nseed_number =')
+            fw.write(str(sample_bud_k[kk]) + '\t')
+        fw.write('\nseed_number = ')
         for kk in range(num_product):
-            fw.write(' ' + str(sample_sn_k[kk]))
-        fw.write('\ncustomer_number =')
+            fw.write(str(sample_sn_k[kk]) + '\t')
+        fw.write('\ncustomer_number = ')
         for kk in range(num_product):
-            fw.write(' ' + str(sample_pnn_k[kk]))
+            fw.write(str(sample_pnn_k[kk]) + '\t')
         fw.write('\n\n')
 
-        for r in result:
-            # -- pro, bud, sn_k, pnn_k, pro_k, bud_k, seed_set --
-            fw.write(str(r) + '\t')
+        # for r in result:
+        #     # -- pro, bud, sn_k, pnn_k, pro_k, bud_k, seed_set --
+        #     fw.write(str(r) + '\t')
+        fw.write(str(sample_seed_set))
         fw.close()
