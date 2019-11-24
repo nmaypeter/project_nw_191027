@@ -114,6 +114,9 @@ class IniWallet:
         elif self.wallet_dist_type == 'm99e96':
             mu = sum(price_list)
             sigma = abs(min(price_list) - mu) / 3
+        elif self.wallet_dist_type == 'm66e34':
+            mu = sum(price_list) * 0.4167
+            sigma = abs(max(price_list) - mu) / 0.4125
 
         fw = open('data/' + self.data_name + '/' + self.wallet_dist_name + '.txt', 'w')
         for i in range(0, num_node + 1):
