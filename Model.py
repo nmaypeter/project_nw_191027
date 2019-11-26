@@ -52,7 +52,7 @@ class Model:
         self.seed_cost_option = seed_cost_option
         self.diff_seed_option = diff_seed_option
         self.wallet_distribution_type = wallet_distribution_type
-        self.wd_seq = ['m50e25', 'm99e96']
+        self.wd_seq = ['m50e25', 'm99e96', 'm66e34']
         self.budget_iteration = [i for i in range(10, 6, -1)]
         self.monte_carlo = 100
 
