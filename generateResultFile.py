@@ -5,7 +5,7 @@ sc_option_seq = [1, 2, 3]
 ds_option_seq = [1, 2]
 cm_seq = [1, 2]
 prod_seq = [1, 2]
-wd_seq = [1, 3]
+wd_seq = [1, 2, 3]
 model_seq = ['mmioaepw', 'mmioadepw', 'mmioarepw', 'mmioardepw',
              'mdag1epw', 'mdag1depw', 'mdag1repw', 'mdag1rdepw',
              'mdag2epw', 'mdag2depw', 'mdag2repw', 'mdag2rdepw',
