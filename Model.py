@@ -5,41 +5,6 @@ import copy
 import math
 
 
-def generateHeapOrder(heap_o, model_name, dataset_name, product_name, cascade_model, seed_cost_option, diff_seed_option, wallet_distribution_type, remarks):
-    heap_des = sorted(heap_o, reverse=True)
-    wd_seq = [wallet_distribution_type] if wallet_distribution_type else ['m50e25', 'm99e96']
-    ini = Initialization(dataset_name, product_name, wallet_distribution_type)
-    graph_dict = ini.constructGraphDict(cascade_model)
-    product_list = ini.constructProductList()[0]
-    num_product = len(product_list)
-
-    order_dict = {(k, i): ('', '') for k in range(num_product) for i in graph_dict}
-    now_order, last_mg = 0, -1
-    for item in heap_des:
-        p, k, i = item[0], item[1], item[2]
-        now_order += 1 if p != last_mg else 0
-        order_dict[(k, i)] = (p, now_order)
-        last_mg = p
-
-    dataset_name = 'email' * (dataset_name == 'email') + 'dnc' * (dataset_name == 'dnc_email') + \
-                   'Eu' * (dataset_name == 'email_Eu_core') + 'Net' * (dataset_name == 'NetHEPT')
-    product_name = 'lphc' * (product_name == 'item_lphc') + 'hplc' * (product_name == 'item_hplc')
-    for wd in wd_seq:
-        path = 'heap_order/' + dataset_name + '_' + cascade_model + '_' + seed_cost_option
-        if not os.path.isdir(path):
-            os.mkdir(path)
-        path = path + '/' + model_name + '_ds' * diff_seed_option
-        if not os.path.isdir(path):
-            os.mkdir(path)
-        fw = open(path + '/' + wd + '_' + product_name + ('_' + str(remarks)) * bool(remarks) + '.txt', 'w')
-        for k in range(num_product):
-            for i in graph_dict:
-                index = (k, i)
-                mg, order = order_dict[index]
-                fw.write(str(index) + '\t' + str(mg) + '\t' + str(order) + '\n')
-        fw.close()
-
-
 class Model:
     def __init__(self, model_name, dataset_name, product_name, cascade_model, seed_cost_option, diff_seed_option, wallet_distribution_type=''):
         self.model_name = model_name
@@ -83,7 +48,6 @@ class Model:
         celf_heap = [(safe_div((sum(mioa_dict[k][i][j][0] for j in mioa_dict[k][i]) * product_list[k][0] - seed_cost_dict[k][i] * d_flag) * (1.0 if epw_flag else product_weight_list[k]), seed_cost_dict[k][i] if r_flag else 1.0), k, i, 0)
                      for k in range(num_product) for i in mioa_dict[k]]
         heap.heapify_max(celf_heap)
-        generateHeapOrder(celf_heap, self.model_name, self.dataset_name, self.product_name, self.cascade_model, self.seed_cost_option, self.diff_seed_option, self.wallet_distribution_type, '')
 
         ss_acc_time = round(time.time() - ss_start_time, 4)
         temp_sequence = [[ss_acc_time, now_budget, now_profit, seed_set, seed_mioa_dict, celf_heap]]
@@ -200,7 +164,6 @@ class Model:
         heap.heapify_max(celf_heap)
         mep_seed_dag_dict = (celf_heap[0][0], [{} for _ in range(num_product)])
         mep_seed_dag_dict[1][celf_heap[0][1]] = {celf_heap[0][2]: mioa_dict[celf_heap[0][1]][celf_heap[0][2]]}
-        generateHeapOrder(celf_heap, self.model_name, self.dataset_name, self.product_name, self.cascade_model, self.seed_cost_option, self.diff_seed_option, self.wallet_distribution_type, '')
 
         ss_acc_time = round(time.time() - ss_start_time, 4)
         temp_sequence = [[ss_acc_time, now_budget, now_profit, seed_set, seed_dag_dict, mep_seed_dag_dict, celf_heap]]
@@ -325,7 +288,6 @@ class Model:
         heap.heapify_max(celf_heap)
         mep_seed_dag_dict = (celf_heap[0][0], [{} for _ in range(num_product)])
         mep_seed_dag_dict[1][celf_heap[0][1]] = {celf_heap[0][2]: mioa_dict[celf_heap[0][1]][celf_heap[0][2]]}
-        generateHeapOrder(celf_heap, self.model_name, self.dataset_name, self.product_name, self.cascade_model, self.seed_cost_option, self.diff_seed_option, self.wallet_distribution_type, '')
 
         ss_acc_time = round(time.time() - ss_start_time, 4)
         temp_sequence = [[ss_acc_time, now_budget, now_profit, seed_set, seed_dag_dict, mep_seed_dag_dict, celf_heap]]
@@ -443,7 +405,6 @@ class Model:
 
         wd_seq = [self.wallet_distribution_type] if self.wallet_distribution_type else self.wd_seq
         celf_heap = ssng_model.generateCelfHeap(d_flag)
-        generateHeapOrder(celf_heap, self.model_name, self.dataset_name, self.product_name, self.cascade_model, self.seed_cost_option, self.diff_seed_option, self.wallet_distribution_type, '')
 
         ss_acc_time = round(time.time() - ss_start_time, 4)
         temp_sequence = [[ss_acc_time, now_budget, now_profit, seed_set, celf_heap]]
@@ -551,7 +512,6 @@ class Model:
 
         wd_seq = [self.wallet_distribution_type] if self.wallet_distribution_type else self.wd_seq
         degree_heap = sshd_model.generateDegreeHeap()
-        generateHeapOrder(degree_heap, self.model_name, self.dataset_name, self.product_name, self.cascade_model, self.seed_cost_option, self.diff_seed_option, self.wallet_distribution_type, '')
 
         ss_acc_time = round(time.time() - ss_start_time, 4)
         temp_sequence = [[ss_acc_time, now_budget, seed_set, degree_heap]]
@@ -735,8 +695,6 @@ class Model:
         Handbill_now_budget, Handbill_now_profit, Handbill_seed_set = 0.0, 0.0, [set() for _ in range(num_product)]
         wd_seq = [self.wallet_distribution_type] if self.wallet_distribution_type else self.wd_seq
         Billboard_celf_heap, Handbill_celf_heap = ssbcs.generateCelfHeap(self.dataset_name, d_flag)
-        generateHeapOrder(Billboard_celf_heap, self.model_name, self.dataset_name, self.product_name, self.cascade_model, self.seed_cost_option, self.diff_seed_option, self.wallet_distribution_type, 'Billboard')
-        generateHeapOrder(Handbill_celf_heap, self.model_name, self.dataset_name, self.product_name, self.cascade_model, self.seed_cost_option, self.diff_seed_option, self.wallet_distribution_type, 'Handbill')
 
         bud_iteration = self.budget_iteration.copy()
         Billboard_ss_acc_time = round(time.time() - ss_start_time, 4)
@@ -929,267 +887,6 @@ class Model:
                                         final_ep = round(final_ep_t, 4)
 
                     AnnealingScheduleT -= detT
-
-            ss_time = round(time.time() - ss_start_time + Billboard_ss_acc_time + Handbill_ss_acc_time, 4)
-            print('ss_time = ' + str(ss_time) + 'sec, cost = ' + str(final_bud) + ', seed_set_length = ' + str([len(s_set_k) for s_set_k in final_seed_set]))
-            seed_set_sequence[now_bi_index] = copy.deepcopy(final_seed_set)
-            ss_time_sequence[now_bi_index] = ss_time
-            Final_seed_data_sequence[now_bi_index] = Final_seed_data
-
-            for wd in wd_seq:
-                seed_data_path = 'seed_data/' + self.new_dataset_name + '_' + self.cascade_model + '_' + self.seed_cost_option
-                if not os.path.isdir(seed_data_path):
-                    os.mkdir(seed_data_path)
-                seed_data_path0 = seed_data_path + '/' + self.model_name + '_ds' * self.diff_seed_option
-                if not os.path.isdir(seed_data_path0):
-                    os.mkdir(seed_data_path0)
-                seed_data_file = open(seed_data_path0 + '/' + wd + '_' + self.new_product_name + '_bi' + str(self.budget_iteration[now_bi_index]) + '_Final.txt', 'w')
-                for sd in Final_seed_data:
-                    seed_data_file.write(sd)
-                seed_data_file.close()
-
-        while -1 in seed_set_sequence:
-            no_data_index = seed_set_sequence.index(-1)
-            seed_set_sequence[no_data_index] = seed_set_sequence[no_data_index - 1]
-            ss_time_sequence[no_data_index] = ss_time_sequence[no_data_index - 1]
-            Billboard_seed_data_sequence[no_data_index] = Billboard_seed_data_sequence[no_data_index - 1]
-            Handbill_seed_data_sequence[no_data_index] = Handbill_seed_data_sequence[no_data_index - 1]
-            Final_seed_data_sequence[no_data_index] = Final_seed_data_sequence[no_data_index - 1]
-
-        eva_model = EvaluationM(self.model_name, self.dataset_name, self.product_name, self.seed_cost_option, self.diff_seed_option, self.cascade_model)
-        for bi in self.budget_iteration:
-            now_bi_index = self.budget_iteration.index(bi)
-            if self.wallet_distribution_type:
-                eva_model.evaluate(bi, self.wallet_distribution_type, seed_set_sequence[now_bi_index], ss_time_sequence[now_bi_index])
-            else:
-                for wallet_distribution_type in self.wd_seq:
-                    eva_model.evaluate(bi, wallet_distribution_type, seed_set_sequence[now_bi_index], ss_time_sequence[now_bi_index])
-
-    def model_bcsM(self, d_flag=False):
-        ini = Initialization(self.dataset_name, self.product_name, self.wallet_distribution_type)
-        seed_cost_dict = ini.constructSeedCostDict(self.seed_cost_option)
-        graph_dict = ini.constructGraphDict(self.cascade_model)
-        product_list, product_weight_list = ini.constructProductList()
-        num_product = len(product_list)
-        total_cost = sum(seed_cost_dict[k][i] for k in range(num_product) for i in seed_cost_dict[k])
-
-        seed_set_sequence = [-1 for _ in range(len(self.budget_iteration))]
-        ss_time_sequence = [-1 for _ in range(len(self.budget_iteration))]
-        Billboard_seed_data_sequence = [-1 for _ in range(len(self.budget_iteration))]
-        Handbill_seed_data_sequence = [-1 for _ in range(len(self.budget_iteration))]
-        Final_seed_data_sequence = [-1 for _ in range(len(self.budget_iteration))]
-        ssmioa = SeedSelectionMIOA(graph_dict, seed_cost_dict, product_list, product_weight_list)
-
-        ss_start_time = time.time()
-        Billboard_now_budget, Billboard_now_profit, Billboard_seed_set, Billboard_seed_mioa_dict = 0.0, 0.0, [set() for _ in range(num_product)], [{} for _ in range(num_product)]
-        Handbill_now_budget, Handbill_now_profit, Handbill_seed_set, Handbill_seed_mioa_dict = 0.0, 0.0, [set() for _ in range(num_product)], [{} for _ in range(num_product)]
-        wd_seq = [self.wallet_distribution_type] if self.wallet_distribution_type else self.wd_seq
-        Billboard_set, Handbill_set = SpiltHeuristicsSet(self.dataset_name)
-        mioa_dict = ssmioa.generateMIOA()
-        mioa_dict = ssmioa.updateMIOAEPW(mioa_dict)
-        Billboard_celf_heap = [(round(sum(mioa_dict[k][i][j][0] for j in mioa_dict[k][i]) * product_list[k][0] - seed_cost_dict[k][i] * d_flag, 4), k, i, 0)
-                               for k in range(num_product) for i in Billboard_set and mioa_dict[k]]
-        heap.heapify_max(Billboard_celf_heap)
-        Handbill_celf_heap = [(safe_div(sum(mioa_dict[k][i][j][0] for j in mioa_dict[k][i]) * product_list[k][0] - seed_cost_dict[k][i] * d_flag, seed_cost_dict[k][i]), k, i, 0)
-                              for k in range(num_product) for i in Handbill_set and mioa_dict[k]]
-        heap.heapify_max(Handbill_celf_heap)
-        generateHeapOrder(Billboard_celf_heap, self.model_name, self.dataset_name, self.product_name, self.cascade_model, self.seed_cost_option, self.diff_seed_option, self.wallet_distribution_type, 'Billboard')
-        generateHeapOrder(Handbill_celf_heap, self.model_name, self.dataset_name, self.product_name, self.cascade_model, self.seed_cost_option, self.diff_seed_option, self.wallet_distribution_type, 'Handbill')
-
-        bud_iteration = self.budget_iteration.copy()
-        Billboard_ss_acc_time = round(time.time() - ss_start_time, 4)
-        Billboard_temp_sequence = [[Billboard_ss_acc_time, Billboard_now_budget, Billboard_now_profit, Billboard_seed_set, Billboard_seed_mioa_dict, Billboard_celf_heap]]
-        Handbill_ss_acc_time = round(time.time() - ss_start_time, 4)
-        Handbill_temp_sequence = [[Handbill_ss_acc_time, Handbill_now_budget, Handbill_now_profit, Handbill_seed_set, Handbill_seed_mioa_dict, Handbill_celf_heap]]
-        Billboard_temp_seed_data = [['time\tk_prod\ti_node\tnow_budget\tnow_profit\tseed_num\n']]
-        Handbill_temp_seed_data = [['time\tk_prod\ti_node\tnow_budget\tnow_profit\tseed_num\n']]
-        while bud_iteration:
-            now_b_iter = bud_iteration.pop(0)
-            now_bi_index = self.budget_iteration.index(now_b_iter)
-            total_budget = safe_div(total_cost, 2 ** now_b_iter)
-            print('@ selection @ ' + self.new_dataset_name + '_' + self.cascade_model + '_' + self.seed_cost_option +
-                  '\t' + self.model_name + '_ds' * self.diff_seed_option +
-                  '\t' + self.wallet_distribution_type + '_' + self.new_product_name + '_bi' + str(now_b_iter) + ', budget = ' + str(total_budget))
-
-            ss_start_time = time.time()
-
-            if Billboard_temp_sequence:
-                [Billboard_ss_acc_time, Billboard_now_budget, Billboard_now_profit, Billboard_seed_set, Billboard_seed_mioa_dict, Billboard_celf_heap] = Billboard_temp_sequence.pop()
-                Billboard_seed_data = Billboard_temp_seed_data.pop()
-                Billboard_celf_heap_c = []
-                while Billboard_now_budget < total_budget and Billboard_celf_heap:
-                    if round(Billboard_now_budget + seed_cost_dict[Billboard_celf_heap[0][1]][Billboard_celf_heap[0][2]], 4) >= total_budget and bud_iteration and not Billboard_temp_sequence:
-                        Billboard_celf_heap_c = copy.deepcopy(Billboard_celf_heap)
-                    mep_item = heap.heappop_max(Billboard_celf_heap)
-                    mep_mg, mep_k_prod, mep_i_node, mep_flag = mep_item
-                    sc = seed_cost_dict[mep_k_prod][mep_i_node]
-                    seed_set_length = sum(len(Billboard_seed_set[k]) for k in range(num_product))
-
-                    if round(Billboard_now_budget + sc, 4) >= total_budget and not Billboard_temp_sequence:
-                        ss_time = round(time.time() - ss_start_time + Billboard_ss_acc_time, 4)
-                        Billboard_temp_sequence.append([ss_time, Billboard_now_budget, Billboard_now_profit, copy.deepcopy(Billboard_seed_set), copy.deepcopy(Billboard_seed_mioa_dict), Billboard_celf_heap_c])
-                        Billboard_temp_seed_data.append(Billboard_seed_data.copy())
-
-                    if round(Billboard_now_budget + sc, 4) > total_budget:
-                        continue
-
-                    if mep_flag == seed_set_length:
-                        Billboard_seed_mioa_dict = updateSeedMIOADict(Billboard_seed_mioa_dict, mep_k_prod, mep_i_node, Billboard_seed_set, mioa_dict[mep_k_prod][mep_i_node])
-                        Billboard_seed_set[mep_k_prod].add(mep_i_node)
-                        Billboard_now_budget = round(Billboard_now_budget + sc, 4)
-                        Billboard_now_profit = round(Billboard_now_profit + (mep_mg + sc * d_flag), 4)
-                        Billboard_seed_data.append(str(round(time.time() - ss_start_time + Billboard_ss_acc_time, 4)) + '\t' + str(mep_k_prod) + '\t' + str(mep_i_node) + '\t' +
-                                                   str(Billboard_now_budget) + '\t' + str(Billboard_now_profit) + '\t' + str([len(Billboard_seed_set[k]) for k in range(num_product)]) + '\n')
-
-                        if self.diff_seed_option:
-                            Billboard_celf_heap = [celf_item for celf_item in Billboard_celf_heap if celf_item[2] != mep_i_node]
-                            heap.heapify_max(Billboard_celf_heap)
-                    else:
-                        Billboard_seed_exp_mioa_dict = updateSeedMIOADict(copy.deepcopy(Billboard_seed_mioa_dict), mep_k_prod, mep_i_node, Billboard_seed_set, mioa_dict[mep_k_prod][mep_i_node])
-                        expected_inf = calculateExpectedInf(Billboard_seed_exp_mioa_dict)
-                        ep_t = sum(expected_inf[k] * product_list[k][0] for k in range(num_product)) - sc * d_flag
-                        mg_t = round(ep_t - Billboard_now_profit, 4)
-                        flag_t = seed_set_length
-
-                        if mg_t > 0:
-                            celf_item_t = (mg_t, mep_k_prod, mep_i_node, flag_t)
-                            heap.heappush_max(Billboard_celf_heap, celf_item_t)
-                Billboard_seed_data_sequence[now_bi_index] = Billboard_seed_data
-                for wd in wd_seq:
-                    seed_data_path = 'seed_data/' + self.new_dataset_name + '_' + self.cascade_model + '_' + self.seed_cost_option
-                    if not os.path.isdir(seed_data_path):
-                        os.mkdir(seed_data_path)
-                    seed_data_path0 = seed_data_path + '/' + self.model_name + '_ds' * self.diff_seed_option
-                    if not os.path.isdir(seed_data_path0):
-                        os.mkdir(seed_data_path0)
-                    seed_data_file = open(seed_data_path0 + '/' + wd + '_' + self.new_product_name + '_bi' + str(self.budget_iteration[now_bi_index]) + '_Billboard.txt', 'w')
-                    for sd in Billboard_seed_data:
-                        seed_data_file.write(sd)
-                    seed_data_file.close()
-
-            if Handbill_temp_sequence:
-                [Handbill_ss_acc_time, Handbill_now_budget, Handbill_now_profit, Handbill_seed_set, Handbill_seed_mioa_dict, Handbill_celf_heap] = Handbill_temp_sequence.pop()
-                Handbill_seed_data = Handbill_temp_seed_data.pop()
-                Handbill_celf_heap_c = []
-                while Handbill_now_budget < total_budget and Handbill_celf_heap:
-                    if round(Handbill_now_budget + seed_cost_dict[Handbill_celf_heap[0][1]][Handbill_celf_heap[0][2]], 4) >= total_budget and bud_iteration and not Handbill_temp_sequence:
-                        Handbill_celf_heap_c = copy.deepcopy(Handbill_celf_heap)
-                    mep_item = heap.heappop_max(Handbill_celf_heap)
-                    mep_mg, mep_k_prod, mep_i_node, mep_flag = mep_item
-                    sc = seed_cost_dict[mep_k_prod][mep_i_node]
-                    seed_set_length = sum(len(Handbill_seed_set[k]) for k in range(num_product))
-
-                    if round(Handbill_now_budget + sc, 4) >= total_budget and not Handbill_temp_sequence:
-                        ss_time = round(time.time() - ss_start_time + Handbill_ss_acc_time, 4)
-                        Handbill_temp_sequence.append([ss_time, Handbill_now_budget, Handbill_now_profit, copy.deepcopy(Handbill_seed_set), copy.deepcopy(Handbill_seed_mioa_dict), Handbill_celf_heap_c])
-                        Handbill_temp_seed_data.append(Handbill_seed_data.copy())
-
-                    if round(Handbill_now_budget + sc, 4) > total_budget:
-                        continue
-
-                    if mep_flag == seed_set_length:
-                        Handbill_seed_set[mep_k_prod].add(mep_i_node)
-                        Handbill_now_budget = round(Handbill_now_budget + sc, 4)
-                        Handbill_now_profit = round(Handbill_now_profit + (mep_mg * sc + sc * d_flag), 4)
-                        Handbill_seed_data.append(str(round(time.time() - ss_start_time + Handbill_ss_acc_time, 4)) + '\t' + str(mep_k_prod) + '\t' + str(mep_i_node) + '\t' +
-                                                  str(Handbill_now_budget) + '\t' + str(Handbill_now_profit) + '\t' + str([len(Handbill_seed_set[k]) for k in range(num_product)]) + '\n')
-
-                        if self.diff_seed_option:
-                            Handbill_celf_heap = [celf_item for celf_item in Handbill_celf_heap if celf_item[2] != mep_i_node]
-                            heap.heapify_max(Handbill_celf_heap)
-                    else:
-                        Handbill_seed_exp_mioa_dict = updateSeedMIOADict(copy.deepcopy(Handbill_seed_mioa_dict), mep_k_prod, mep_i_node, Handbill_seed_set, mioa_dict[mep_k_prod][mep_i_node])
-                        expected_inf = calculateExpectedInf(Handbill_seed_exp_mioa_dict)
-                        ep_t = sum(expected_inf[k] * product_list[k][0] for k in range(num_product)) - sc * d_flag
-                        mg_t = round(ep_t - Billboard_now_profit, 4)
-                        mg_t = safe_div(mg_t, sc)
-                        flag_t = seed_set_length
-
-                        if mg_t > 0:
-                            celf_item_t = (mg_t, mep_k_prod, mep_i_node, flag_t)
-                            heap.heappush_max(Handbill_celf_heap, celf_item_t)
-                Handbill_seed_data_sequence[now_bi_index] = Handbill_seed_data
-                for wd in wd_seq:
-                    seed_data_path = 'seed_data/' + self.new_dataset_name + '_' + self.cascade_model + '_' + self.seed_cost_option
-                    if not os.path.isdir(seed_data_path):
-                        os.mkdir(seed_data_path)
-                    seed_data_path0 = seed_data_path + '/' + self.model_name + '_ds' * self.diff_seed_option
-                    if not os.path.isdir(seed_data_path0):
-                        os.mkdir(seed_data_path0)
-                    seed_data_file = open(seed_data_path0 + '/' + wd + '_' + self.new_product_name + '_bi' + str(self.budget_iteration[now_bi_index]) + '_Handbill.txt', 'w')
-                    for sd in Handbill_seed_data:
-                        seed_data_file.write(sd)
-                    seed_data_file.close()
-
-            ss_start_time = time.time()
-            final_seed_set = copy.deepcopy(Billboard_seed_set)
-            final_bud = Billboard_now_budget
-            final_ep = Billboard_now_profit
-            Final_seed_data = ['time\tk_prod\ti_node\tnow_budget\tnow_profit\tstate\n']
-            Handbill_counter = 0
-            for k in range(num_product):
-                for s in Billboard_seed_set[k]:
-                    final_seed_set_t = copy.deepcopy(final_seed_set)
-                    final_seed_set_t[k].remove(s)
-                    final_bud_t = round(final_bud - seed_cost_dict[k][s], 4)
-                    Handbill_seed_seq = [(k, i) for k in range(num_product) for i in Handbill_seed_set[k] if i not in final_seed_set_t[k]]
-                    if Handbill_seed_seq:
-                        min_Handbill_cost = min(seed_cost_dict[Handbill_item[0]][Handbill_item[1]] for Handbill_item in Handbill_seed_seq)
-                        Handbill_counter_t = 0
-                        replaced_list = []
-                        while total_budget - final_bud_t >= min_Handbill_cost and Handbill_seed_seq:
-                            k_prod, i_node = Handbill_seed_seq.pop(choice([i for i in range(len(Handbill_seed_seq))]))
-                            if seed_cost_dict[k_prod][i_node] <= total_budget - final_bud_t:
-                                replaced_list.append((k_prod, i_node))
-                                final_seed_set_t[k_prod].add(i_node)
-                                final_bud_t += seed_cost_dict[k_prod][i_node]
-                                Handbill_counter_t += 1
-                        seed_exp_mioa_dict = generateExpMIOA(mioa_dict, final_seed_set_t)
-                        expected_inf = calculateExpectedInf(seed_exp_mioa_dict)
-                        final_ep_t = sum(expected_inf[k] * product_list[k][0] for k in range(num_product))
-                        final_mg_t = final_ep_t - final_ep
-                        if final_mg_t >= 0:
-                            Final_seed_data.append(str(round(time.time() - ss_start_time, 4)) + '\t' + str(k) + '\t' + str(s) + '\t' +
-                                                   str(final_bud) + '\t' + str(final_ep) + '\t' + 'Replaced' + '\n')
-                            for k_prod, i_node in replaced_list:
-                                Final_seed_data.append(str(round(time.time() - ss_start_time, 4)) + '\t' + str(k_prod) + '\t' + str(i_node) + '\t' +
-                                                       str(final_bud_t) + '\t' + str(final_ep_t) + '\t' + 'Replace' + '\n')
-                            Final_seed_data.append('---------------------------\n')
-                            final_seed_set = final_seed_set_t
-                            final_bud = round(final_bud_t, 4)
-                            final_ep = round(final_ep_t, 4)
-                            Handbill_counter += Handbill_counter_t
-
-                            for q in range(Handbill_counter):
-                                final_seed_set_t = copy.deepcopy(final_seed_set)
-                                final_Handbill_seed_set = [(k, i) for k in range(num_product) for i in final_seed_set_t[k] if i in Handbill_seed_set[k]]
-                                if final_Handbill_seed_set:
-                                    k_prod, i_node = final_Handbill_seed_set.pop(choice([i for i in range(len(final_Handbill_seed_set))]))
-                                    final_seed_set_t[k_prod].remove(i_node)
-                                    final_bud_t = final_bud - seed_cost_dict[k_prod][i_node]
-                                    Handbill_seed_seq = [(k, i) for k in range(num_product) for i in Handbill_seed_set[k] if i not in final_seed_set_t[k]]
-                                    min_Handbill_cost = min(seed_cost_dict[Handbill_item[0]][Handbill_item[1]] for Handbill_item in Handbill_seed_seq)
-                                    replaced_list = []
-                                    while total_budget - final_bud_t >= min_Handbill_cost and Handbill_seed_seq:
-                                        k_prod, i_node = Handbill_seed_seq.pop(choice([i for i in range(len(Handbill_seed_seq))]))
-                                        if seed_cost_dict[k_prod][i_node] <= total_budget - final_bud_t:
-                                            replaced_list.append((k_prod, i_node))
-                                            final_seed_set_t[k_prod].add(i_node)
-                                            final_bud_t += seed_cost_dict[k_prod][i_node]
-                                    seed_exp_mioa_dict = generateExpMIOA(mioa_dict, final_seed_set_t)
-                                    expected_inf = calculateExpectedInf(seed_exp_mioa_dict)
-                                    final_ep_t = sum(expected_inf[k] * product_list[k][0] for k in range(num_product))
-                                    final_mg_t = final_ep_t - final_ep
-                                    if final_mg_t >= 0:
-                                        Final_seed_data.append(str(round(time.time() - ss_start_time, 4)) + '\t' + str(k) + '\t' + str(s) + '\t' +
-                                                               str(final_bud) + '\t' + str(final_ep) + '\t' + 'Replaced' + '\n')
-                                        for k_prod, i_node in replaced_list:
-                                            Final_seed_data.append(str(round(time.time() - ss_start_time, 4)) + '\t' + str(k_prod) + '\t' + str(i_node) + '\t' +
-                                                                   str(final_bud_t) + '\t' + str(final_ep_t) + '\t' + 'Replace' + '\n')
-                                        Final_seed_data.append('---------------------------\n')
-                                        final_seed_set = final_seed_set_t
-                                        final_bud = round(final_bud_t, 4)
-                                        final_ep = round(final_ep_t, 4)
 
             ss_time = round(time.time() - ss_start_time + Billboard_ss_acc_time + Handbill_ss_acc_time, 4)
             print('ss_time = ' + str(ss_time) + 'sec, cost = ' + str(final_bud) + ', seed_set_length = ' + str([len(s_set_k) for s_set_k in final_seed_set]))
