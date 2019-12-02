@@ -9,7 +9,6 @@ wd_seq = [1, 2, 3]
 model_seq = ['mmioaepw', 'mmioadepw', 'mmioarepw', 'mmioardepw',
              'mdag1epw', 'mdag1depw', 'mdag1repw', 'mdag1rdepw',
              'mdag2epw', 'mdag2depw', 'mdag2repw', 'mdag2rdepw',
-             'mbcs', 'mbcsd', 'mbcsM', 'mbcsMd',
              'mmioa', 'mmioad', 'mmioapw', 'mmioadpw',
              'mmioar', 'mmioard', 'mmioarpw', 'mmioardpw',
              'mdag1', 'mdag1d', 'mdag1pw', 'mdag1dpw',
@@ -18,7 +17,7 @@ model_seq = ['mmioaepw', 'mmioadepw', 'mmioarepw', 'mmioardepw',
              'mdag2r', 'mdag2rd', 'mdag2rpw', 'mdag2rdpw',
              'mng', 'mngd', 'mngpw', 'mngdpw',
              'mngr', 'mngrd', 'mngrpw', 'mngrdpw',
-             'mhd', 'mr']
+             'mbcs', 'mbcsd', 'mhd', 'mr']
 
 for data_setting in dataset_seq:
     # dataset_name = 'email' * (data_setting == 1) + 'dnc_email' * (data_setting == 2) + \
