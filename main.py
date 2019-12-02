@@ -28,10 +28,9 @@ if __name__ == '__main__':
                         # Model('mdag2r', dataset_name, product_name, cascade_model, seed_cost_option, diff_seed_option).model_dag2(r_flag=True)
                         # Model('mng', dataset_name, product_name, cascade_model, seed_cost_option, diff_seed_option).model_ng(r_flag=False)
                         # Model('mngr', dataset_name, product_name, cascade_model, seed_cost_option, diff_seed_option).model_ng(r_flag=True)
+                        # Model('mbcs', dataset_name, product_name, cascade_model, seed_cost_option, diff_seed_option).model_bcs()
                         # Model('mhd', dataset_name, product_name, cascade_model, seed_cost_option, diff_seed_option).model_hd()
                         # Model('mr', dataset_name, product_name, cascade_model, seed_cost_option, diff_seed_option).model_r()
-                        # Model('mbcs', dataset_name, product_name, cascade_model, seed_cost_option, diff_seed_option).model_bcs()
-                        # Model('mbcsM', dataset_name, product_name, cascade_model, seed_cost_option, diff_seed_option).model_bcsM()
 
                         # Model('mmioad', dataset_name, product_name, cascade_model, seed_cost_option, diff_seed_option).model_mioa(r_flag=False, d_flag=True)
                         # Model('mmioard', dataset_name, product_name, cascade_model, seed_cost_option, diff_seed_option).model_mioa(r_flag=True, d_flag=True)
@@ -42,7 +41,6 @@ if __name__ == '__main__':
                         # Model('mngd', dataset_name, product_name, cascade_model, seed_cost_option, diff_seed_option).model_ng(r_flag=False, d_flag=True)
                         # Model('mngrd', dataset_name, product_name, cascade_model, seed_cost_option, diff_seed_option).model_ng(r_flag=True, d_flag=True)
                         # Model('mbcsd', dataset_name, product_name, cascade_model, seed_cost_option, diff_seed_option).model_bcs(d_flag=True)
-                        # Model('mbcsMd', dataset_name, product_name, cascade_model, seed_cost_option, diff_seed_option).model_bcsM(d_flag=True)
 
                         for wd in wd_seq:
                             wallet_distribution_type = 'm50e25' * (wd == 1) + 'm99e96' * (wd == 2) + 'm66e34' * (wd == 3)
