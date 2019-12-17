@@ -20,14 +20,14 @@ for data_setting in dataset_seq:
         seed_cost_option = 'dp' * (sc_option == 1) + 'd' * (sc_option == 2) + 'p' * (sc_option == 3)
         for cm in cm_seq:
             cascade_model = 'ic' * (cm == 1) + 'wc' * (cm == 2)
-            profit_list = []
+            profit_list, time_list = [], []
             for bi in range(10, 6, -1):
                 for prod_setting in prod_seq:
                     new_product_name = 'lphc' * (prod_setting == 1) + 'hplc' * (prod_setting == 2)
                     for wd in wd_seq:
                         wallet_distribution_type = 'm50e25' * (wd == 1) + 'm99e96' * (wd == 2) + 'm66e34' * (wd == 3)
 
-                        profit = []
+                        profit, time = [], []
                         r = new_dataset_name + '\t' + seed_cost_option + '\t' + cascade_model + '\t' + \
                             wallet_distribution_type + '\t' + new_product_name + '\t' + str(bi)
                         print(r)
@@ -41,8 +41,12 @@ for data_setting in dataset_seq:
                                 with open(result_name) as f:
                                     p = 0.0
                                     for lnum, line in enumerate(f):
-                                        if lnum < 4:
+                                        if lnum < 2 or lnum == 3:
                                             continue
+                                        elif lnum == 2:
+                                            (l) = line.split()
+                                            t = l[-1]
+                                            time.append(t)
                                         elif lnum == 4:
                                             (l) = line.split()
                                             p = float(l[-1])
@@ -54,11 +58,20 @@ for data_setting in dataset_seq:
                                             break
                             except FileNotFoundError:
                                 profit.append('')
+                                time.append('')
                         profit_list.append(profit)
+                        time_list.append(time)
                 profit_list.append(['' for _ in range(len(model_seq))])
+                time_list.append(['' for _ in range(len(model_seq))])
 
-            result_path = 'result/result_' + new_dataset_name + '_s.xlsx'
+            result_path = 'result/profit_' + new_dataset_name + '.xlsx'
             wb = xw.Book(result_path)
-            sheet_name = 'profit_' + seed_cost_option + ' (' + cascade_model + ')'
+            sheet_name = cascade_model + '_' + seed_cost_option
             sheet = wb.sheets[sheet_name]
             sheet.cells(7, "C").value = profit_list
+
+            result_path = 'result/time_' + new_dataset_name + '.xlsx'
+            wb = xw.Book(result_path)
+            sheet_name = cascade_model + '_' + seed_cost_option
+            sheet = wb.sheets[sheet_name]
+            sheet.cells(7, "C").value = time_list
