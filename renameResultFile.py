@@ -17,8 +17,7 @@ model_seq = ['mmioaepw', 'mmioadepw', 'mmioarepw', 'mmioardepw',
              'mdag2r', 'mdag2rd', 'mdag2rpw', 'mdag2rdpw',
              'mng', 'mngd', 'mngpw', 'mngdpw',
              'mngr', 'mngrd', 'mngrpw', 'mngrdpw',
-             'mbcs', 'mbcsd', 'mbcsM', 'mbcsMd',
-             'mhd', 'mr']
+             'mbcs', 'mbcsd', 'mhd', 'mr']
 
 # result
 for data_setting in dataset_seq:
@@ -75,7 +74,7 @@ for data_setting in dataset_seq:
         seed_cost_option = 'dp' * (sc_option == 1) + 'd' * (sc_option == 2) + 'p' * (sc_option == 3)
         for cm in cm_seq:
             cascade_model = 'ic' * (cm == 1) + 'wc' * (cm == 2)
-            for bi in range(10, 5, -1):
+            for bi in range(10, 6, -1):
                 for ds_option in ds_option_seq:
                     diff_seed_option = False if ds_option == 1 else True
                     for prod_setting in prod_seq:
