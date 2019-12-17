@@ -108,10 +108,10 @@ class EvaluationM:
         path0 = 'result/' + self.new_dataset_name + '_' + self.cascade_model + '_' + self.seed_cost_option
         if not os.path.isdir(path0):
             os.mkdir(path0)
-        path = path0 + '/' + self.model_name + '_ds' * self.diff_seed_option
+        path = path0 + '/' + wallet_distribution_type + '_' + self.new_product_name + '_bi' + str(bi)
         if not os.path.isdir(path):
             os.mkdir(path)
-        result_name = path + '/' + wallet_distribution_type + '_' + self.new_product_name + '_bi' + str(bi) + '.txt'
+        result_name = path + '/' + self.model_name + '_ds' * self.diff_seed_option + '.txt'
 
         fw = open(result_name, 'w')
         fw.write(self.new_dataset_name + '_' + self.cascade_model + '_' + self.seed_cost_option + '\t' +
