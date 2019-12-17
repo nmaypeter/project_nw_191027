@@ -54,7 +54,7 @@ class Evaluation:
 
 
 class EvaluationM:
-    def __init__(self, model_name, dataset_name, product_name, seed_cost_option, diff_seed_option, cascade_model):
+    def __init__(self, model_name, dataset_name, product_name, seed_cost_option, cascade_model):
         self.model_name = model_name
         self.dataset_name = dataset_name
         self.new_dataset_name = 'email' * (dataset_name == 'email') + 'dnc' * (dataset_name == 'dnc_email') + \
@@ -62,7 +62,6 @@ class EvaluationM:
         self.product_name = product_name
         self.new_product_name = 'lphc' * (product_name == 'item_lphc') + 'hplc' * (product_name == 'item_hplc')
         self.seed_cost_option = seed_cost_option
-        self.diff_seed_option = diff_seed_option
         self.cascade_model = cascade_model
         self.eva_monte_carlo = 100
 
@@ -80,7 +79,7 @@ class EvaluationM:
 
         eva = Evaluation(graph_dict, product_list, wallet_dict)
         print('@ evaluation @ ' + self.new_dataset_name + '_' + self.cascade_model + '_' + self.seed_cost_option +
-              '\t' + self.model_name + '_ds' * self.diff_seed_option +
+              '\t' + self.model_name +
               '\t' + wallet_distribution_type + '_' + self.new_product_name + '_bi' + str(bi))
         sample_pnn_k = [0.0 for _ in range(num_product)]
         seed_diffusion_dict_k = {(k, s): 0 for k in range(num_product) for s in sample_seed_set[k]}
@@ -111,11 +110,11 @@ class EvaluationM:
         path = path0 + '/' + wallet_distribution_type + '_' + self.new_product_name + '_bi' + str(bi)
         if not os.path.isdir(path):
             os.mkdir(path)
-        result_name = path + '/' + self.model_name + '_ds' * self.diff_seed_option + '.txt'
+        result_name = path + '/' + self.model_name + '.txt'
 
         fw = open(result_name, 'w')
         fw.write(self.new_dataset_name + '_' + self.cascade_model + '_' + self.seed_cost_option + '\t' +
-                 self.model_name + '_ds' * self.diff_seed_option + '\t' +
+                 self.model_name + '\t' +
                  wallet_distribution_type + '_' + self.new_product_name + '_bi' + str(bi) + '\n' +
                  'budget_limit = ' + str(total_budget) + '\n' +
                  'time = ' + str(ss_time) + '\n\n' +
